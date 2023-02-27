@@ -5,6 +5,7 @@
 //
 
 import AppKit
+import SwiftUI
 
 extension NSStatusItem {
     /// Toggles the menu/window state by mimicking a menu item button press.
@@ -22,7 +23,7 @@ extension NSStatusItem {
     
     /// Toggles the menu/window state by mimicking a menu item button press.
     @_disfavoredOverload
-    public func setPresentedMenuBased(state: Bool) {
+    internal func setPresentedMenuBased(state: Bool) {
         // read current state and selectively call toggle if state differs
         let currentState = button?.state != .off
         guard state != currentState else { return }
@@ -31,7 +32,7 @@ extension NSStatusItem {
     
     /// Toggles the menu/window state by mimicking a menu item button press.
     @_disfavoredOverload
-    public func setPresentedWindowBased(state: Bool, window: NSWindow?) {
+    internal func setPresentedWindowBased(state: Bool, window: NSWindow?) {
         // experiment #1:
         //   - try sending an action that might accomplish this?
         // invalid selectors: showWindow, hideWindow, closeWindow, close
@@ -45,6 +46,48 @@ extension NSStatusItem {
         let isVisible = window?.isVisible == true
         guard state != isVisible else { return }
         togglePresented()
+    }
+}
+
+extension NSStatusItem {
+    internal class ButtonStateObserver: NSObject {
+        @objc private weak var objectToObserve: NSButton?
+        private var observation: NSKeyValueObservation?
+        
+        init(
+            object: NSButton,
+            _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>)
+                -> Void
+        ) {
+            objectToObserve = object
+            super.init()
+            
+            observation = object.observe(
+                \.cell!.state,
+                 options: [.initial, .new]
+            ) { ob, change in
+                handler(change)
+            }
+        }
+        
+        deinit {
+            print("Observer deinit")
+            observation?.invalidate()
+        }
+    }
+    
+     internal func stateObserverMenuBased(
+         _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
+     ) -> ButtonStateObserver? {
+         guard let button else { return nil }
+         let newObserver = ButtonStateObserver(object: button, handler)
+         return newObserver
+     }
+    
+    typealias ButtonStatePublisher = KeyValueObservingPublisher<NSStatusBarButton, NSControl.StateValue>
+    
+    internal func buttonStatePublisher() -> ButtonStatePublisher? {
+        button?.publisher(for: \.cell!.state, options: [.initial, .new])
     }
 }
 

@@ -9,69 +9,73 @@ import MenuBarExtraAccess
 
 @main
 struct MenuBarExtraAccessDemoApp: App {
+    @State var isMenu0Presented: Bool = false
     @State var isMenu1Presented: Bool = false
     @State var isMenu2Presented: Bool = false
     @State var isMenu3Presented: Bool = false
     @State var isMenu4Presented: Bool = false
-    @State var isMenu5Presented: Bool = false
     
     var body: some Scene {
-        // item 1: standard menu
-        MenuBarExtra("Menu 1", systemImage: "1.circle.fill") {
-            Button("Menu Item 1") { print("Menu Item 1") }
-            Button("Menu Item 2") { print("Menu Item 2") }
+        // standard menu
+        MenuBarExtra("Menu Index 0", systemImage: "0.circle.fill") {
+            Button("Menu Item A") { print("Menu Item A") }
+            Button("Menu Item B") { print("Menu Item B") }
+                .menuBarExtraObserver(index: 0, updating: $isMenu0Presented)
         }
-        .menuBarExtraAccess(index: 0, isPresented: $isMenu1Presented)
+        .menuBarExtraAccess(index: 0, isPresented: $isMenu0Presented)
         .menuBarExtraStyle(.menu)
         
-        // item 2: standard menu using named image
-        MenuBarExtra("Menu 2", image: "2.circle.fill") {
-            Button("Menu Item 1") { print("Menu Item 1") }
-            Button("Menu Item 2") { print("Menu Item 2") }
-            Button("Menu Item 3") { print("Menu Item 3") }
+        // standard menu using named image
+        MenuBarExtra("Menu Index 1", image: "1.circle.fill") {
+            Button("Menu Item A") { print("Menu Item A") }
+            Button("Menu Item B") { print("Menu Item B") }
+            Button("Menu Item C") { print("Menu Item C") }
+                .menuBarExtraObserver(index: 1, updating: $isMenu1Presented)
         }
-        .menuBarExtraAccess(index: 1, isPresented: $isMenu2Presented)
+        .menuBarExtraAccess(index: 1, isPresented: $isMenu1Presented)
         .menuBarExtraStyle(.menu)
         
-        // item 3: window-style using systemImage
-        MenuBarExtra("Window 1", systemImage: "3.circle.fill") {
-            MenuBarView(isMenuPresented: $isMenu3Presented)
+        // window-style using systemImage
+        MenuBarExtra("Menu Index 2", systemImage: "2.circle.fill") {
+            MenuBarView(index: 2, isMenuPresented: $isMenu2Presented)
         }
-        .menuBarExtraAccess(index: 2, isPresented: $isMenu3Presented)
+        .menuBarExtraAccess(index: 2, isPresented: $isMenu2Presented)
         .menuBarExtraStyle(.window)
         
-        // item 4: window-style using named image
-        MenuBarExtra("Window 2", image: "4.circle.fill") {
-            MenuBarView(isMenuPresented: $isMenu4Presented)
+        // window-style using named image
+        MenuBarExtra("Menu Index 3", image: "3.circle.fill") {
+            MenuBarView(index: 3, isMenuPresented: $isMenu3Presented)
                 .introspectMenuBarExtraWindow(index: 3) { window in
-                    window.animationBehavior = .alertPanel // just for fun, but looks a bit weird
+                    // just to demonstrate introspection, but looks a bit weird
+                    window.animationBehavior = .alertPanel
                 }
         }
-        .menuBarExtraAccess(index: 3, isPresented: $isMenu4Presented)
+        .menuBarExtraAccess(index: 3, isPresented: $isMenu3Presented)
         .menuBarExtraStyle(.window)
         
-        // item 5: window-style using custom label
+        // window-style using custom label
         MenuBarExtra {
-            MenuBarView(isMenuPresented: $isMenu5Presented)
+            MenuBarView(index: 4, isMenuPresented: $isMenu4Presented)
         } label: {
-            Image(systemName: "5.circle.fill")
+            Image(systemName: "4.circle.fill")
         }
-        .menuBarExtraAccess(index: 4, isPresented: $isMenu5Presented)
+        .menuBarExtraAccess(index: 4, isPresented: $isMenu4Presented)
         .menuBarExtraStyle(.window)
         
         Settings {
             SettingsView(
+                isMenu0Presented: $isMenu0Presented,
                 isMenu1Presented: $isMenu1Presented,
                 isMenu2Presented: $isMenu2Presented,
                 isMenu3Presented: $isMenu3Presented,
-                isMenu4Presented: $isMenu4Presented,
-                isMenu5Presented: $isMenu5Presented
+                isMenu4Presented: $isMenu4Presented
             )
         }.windowResizability(.contentSize)
     }
 }
 
 struct MenuBarView: View {
+    let index: Int
     @Binding var isMenuPresented: Bool
     
     var body: some View {
@@ -81,23 +85,24 @@ struct MenuBarView: View {
             }
         }
         .frame(width: 450, height: 200)
+        .menuBarExtraObserver(index: index, updating: $isMenuPresented)
     }
 }
 
 struct SettingsView: View {
+    @Binding var isMenu0Presented: Bool
     @Binding var isMenu1Presented: Bool
     @Binding var isMenu2Presented: Bool
     @Binding var isMenu3Presented: Bool
     @Binding var isMenu4Presented: Bool
-    @Binding var isMenu5Presented: Bool
     
     var body: some View {
         VStack {
+            MenuStateView(num: 0, isMenuPresented: $isMenu0Presented)
             MenuStateView(num: 1, isMenuPresented: $isMenu1Presented)
             MenuStateView(num: 2, isMenuPresented: $isMenu2Presented)
             MenuStateView(num: 3, isMenuPresented: $isMenu3Presented)
             MenuStateView(num: 4, isMenuPresented: $isMenu4Presented)
-            MenuStateView(num: 5, isMenuPresented: $isMenu5Presented)
         }
         .padding()
         .frame(minWidth: 400)
