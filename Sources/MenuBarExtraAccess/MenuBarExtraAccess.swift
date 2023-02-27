@@ -75,7 +75,6 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     private func observerSetup() -> Int {
         observerContainer.setup {
             MenuBarExtraUtils.newObserver(index: index) { change in
-                print(change)
                 guard let newVal = change.newValue else { return }
                 let newBool = newVal != .off
                 if isMenuPresented != newBool { isMenuPresented = newBool }

@@ -6,6 +6,7 @@
 
 import AppKit
 import SwiftUI
+import Combine
 
 /// Global static utility methods for interacting the app's menu bar extras (status items).
 enum MenuBarExtraUtils {
@@ -115,8 +116,6 @@ enum MenuBarExtraUtils {
         index: Int,
         _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
     ) -> NSStatusItem.ButtonStateObserver? {
-        print("Setting up state observer for menu bar extra with index \(index)")
-        
         guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
             print("Can't register menu bar extra state observer: Can't find status item. It may not yet exist.")
             return nil
@@ -124,11 +123,44 @@ enum MenuBarExtraUtils {
         
         guard let observer = statusItem.stateObserverMenuBased(handler)
         else {
-            print("Can't register menu bar extra state observer: Can't generate publisher.")
+            print("Can't register menu bar extra state observer: Can't generate observer.")
             return nil
         }
         
         return observer
+    }
+    
+    static func newPublisher(
+        index: Int
+    ) -> NSStatusItem.ButtonStatePublisher? {
+        guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
+            print("Can't register menu bar extra state observer: Can't find status item. It may not yet exist.")
+            return nil
+        }
+        
+        guard let publisher = statusItem.buttonStatePublisher()
+        else {
+            print("Can't register menu bar extra state observer: Can't generate publisher.")
+            return nil
+        }
+        
+        return publisher
+    }
+    
+    /// Wraps `newPublisher` in a sink.
+    static func newPublisherSink(
+        index: Int,
+        block: @escaping (_ newValue: NSControl.StateValue?) -> Void
+    ) -> AnyCancellable? {
+        newPublisher(index: index)?
+            .flatMap { value in
+                Just(value)
+                    .tryMap { value throws -> NSControl.StateValue in value }
+                    .replaceError(with: nil)
+            }
+            .sink(receiveValue: { value in
+                block(value)
+            })
     }
 }
 

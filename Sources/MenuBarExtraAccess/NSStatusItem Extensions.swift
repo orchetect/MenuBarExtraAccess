@@ -51,7 +51,7 @@ extension NSStatusItem {
 
 extension NSStatusItem {
     internal class ButtonStateObserver: NSObject {
-        @objc private weak var objectToObserve: NSStatusBarButton?
+        private weak var objectToObserve: NSStatusBarButton?
         private var observation: NSKeyValueObservation?
         
         init(
