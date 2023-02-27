@@ -31,6 +31,8 @@ extension NSStatusItem {
     }
 }
 
+// MARK: - KVO Observer
+
 extension NSStatusItem {
     internal class ButtonStateObserver: NSObject {
         private weak var objectToObserve: NSStatusBarButton?
@@ -53,19 +55,23 @@ extension NSStatusItem {
         }
         
         deinit {
-            print("Observer deinit")
+            //print("Observer deinit")
             observation?.invalidate()
         }
     }
     
-     internal func stateObserverMenuBased(
-         _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
-     ) -> ButtonStateObserver? {
-         guard let button else { return nil }
-         let newObserver = ButtonStateObserver(object: button, handler)
-         return newObserver
-     }
-    
+    internal func stateObserverMenuBased(
+        _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
+    ) -> ButtonStateObserver? {
+        guard let button else { return nil }
+        let newObserver = ButtonStateObserver(object: button, handler)
+        return newObserver
+    }
+}
+
+// MARK: - KVO Publisher
+
+extension NSStatusItem {
     typealias ButtonStatePublisher = KeyValueObservingPublisher<NSStatusBarButton, NSControl.StateValue>
     
     internal func buttonStatePublisher() -> ButtonStatePublisher? {

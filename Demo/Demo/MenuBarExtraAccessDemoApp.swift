@@ -17,7 +17,7 @@ struct MenuBarExtraAccessDemoApp: App {
     
     var body: some Scene {
         // standard menu
-        MenuBarExtra("Menu Index 0", systemImage: "0.circle.fill") {
+        MenuBarExtra("Menu: Index 0", systemImage: "0.circle.fill") {
             Button("Menu Item A") { print("Menu Item A") }
             Button("Menu Item B") { print("Menu Item B") }
         }
@@ -25,7 +25,7 @@ struct MenuBarExtraAccessDemoApp: App {
         .menuBarExtraStyle(.menu)
         
         // standard menu using named image
-        MenuBarExtra("Menu Index 1", image: "1.circle.fill") {
+        MenuBarExtra("Menu: Index 1", image: "1.circle.fill") {
             Button("Menu Item A") { print("Menu Item A") }
             Button("Menu Item B") { print("Menu Item B") }
             Button("Menu Item C") { print("Menu Item C") }
@@ -34,14 +34,14 @@ struct MenuBarExtraAccessDemoApp: App {
         .menuBarExtraStyle(.menu)
         
         // window-style using systemImage
-        MenuBarExtra("Menu Index 2", systemImage: "2.circle.fill") {
+        MenuBarExtra("Menu: Index 2", systemImage: "2.circle.fill") {
             MenuBarView(index: 2, isMenuPresented: $isMenu2Presented)
         }
         .menuBarExtraAccess(index: 2, isPresented: $isMenu2Presented)
         .menuBarExtraStyle(.window)
         
         // window-style using named image
-        MenuBarExtra("Menu Index 3", image: "3.circle.fill") {
+        MenuBarExtra("Menu: Index 3", image: "3.circle.fill") {
             MenuBarView(index: 3, isMenuPresented: $isMenu3Presented)
                 .introspectMenuBarExtraWindow(index: 3) { window in
                     // just to demonstrate introspection, but looks a bit weird

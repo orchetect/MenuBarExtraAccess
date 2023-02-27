@@ -164,7 +164,6 @@ enum StatusItemIdentity {
 }
 
 extension NSStatusItem {
-    // may not be needed
     var menuBarExtraIndex: Int {
         MenuBarExtraUtils.statusItems.firstIndex(of: self) ?? 0
     }

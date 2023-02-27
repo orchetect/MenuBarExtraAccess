@@ -19,7 +19,6 @@ extension View {
                     return
                 }
                 
-                //print("Applying introspectMenuBarExtraWindow() for status item.")
                 block(window)
             }
     }

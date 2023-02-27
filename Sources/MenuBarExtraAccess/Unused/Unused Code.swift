@@ -39,7 +39,6 @@ extension Scene {
             "label"
         ) as? any View {
             let hashed = MenuBarExtraUtils.hash(anyView: anyView)
-            print("hash:", hashed)
             return hashed
         }
         
