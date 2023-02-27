@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "MenuBarExtraAccess",
-    platforms: [.macOS(.v13)],
+    platforms: [.macOS(.v10_15)],
     products: [
         .library(
             name: "MenuBarExtraAccess",

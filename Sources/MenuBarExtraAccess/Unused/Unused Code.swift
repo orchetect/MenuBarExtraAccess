@@ -7,6 +7,7 @@
 import SwiftUI
 import Combine
 
+@available(macOS 11.0, *)
 extension Scene {
     fileprivate func menuBarExtraID() -> String? {
         // Note: this is not ideal, but it's currently the ONLY way to achieve this
