@@ -20,7 +20,6 @@ struct MenuBarExtraAccessDemoApp: App {
         MenuBarExtra("Menu Index 0", systemImage: "0.circle.fill") {
             Button("Menu Item A") { print("Menu Item A") }
             Button("Menu Item B") { print("Menu Item B") }
-                .menuBarExtraObserver(index: 0, updating: $isMenu0Presented)
         }
         .menuBarExtraAccess(index: 0, isPresented: $isMenu0Presented)
         .menuBarExtraStyle(.menu)
@@ -30,7 +29,6 @@ struct MenuBarExtraAccessDemoApp: App {
             Button("Menu Item A") { print("Menu Item A") }
             Button("Menu Item B") { print("Menu Item B") }
             Button("Menu Item C") { print("Menu Item C") }
-                .menuBarExtraObserver(index: 1, updating: $isMenu1Presented)
         }
         .menuBarExtraAccess(index: 1, isPresented: $isMenu1Presented)
         .menuBarExtraStyle(.menu)
@@ -85,7 +83,6 @@ struct MenuBarView: View {
             }
         }
         .frame(width: 450, height: 200)
-        .menuBarExtraObserver(index: index, updating: $isMenuPresented)
     }
 }
 

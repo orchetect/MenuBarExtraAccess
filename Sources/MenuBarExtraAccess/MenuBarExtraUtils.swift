@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Global static utility methods for interacting the app's menu bar extras (status items).
 enum MenuBarExtraUtils {
+    // MARK: - Menu Extra Manipulation
+    
     /// Toggle MenuBarExtra menu/window presentation state.
     static func togglePresented(for ident: StatusItemIdentity? = nil) {
         statusItem(for: ident)?.togglePresented()
@@ -25,6 +27,8 @@ enum MenuBarExtraUtils {
             item.setPresentedWindowBased(state: state, window: window)
         }
     }
+    
+    // MARK: - Objects and Metadata
     
     /// Returns the underlying status item(s) created by `MenuBarExtra` instances.
     ///
@@ -102,6 +106,29 @@ enum MenuBarExtraUtils {
                 return item == statusItem
             }
         }
+    }
+    
+    // MARK: - Observer
+    
+    /// Call from MenuBarExtraAccess init to set up observer.
+    static func newObserver(
+        index: Int,
+        _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
+    ) -> NSStatusItem.ButtonStateObserver? {
+        print("Setting up state observer for menu bar extra with index \(index)")
+        
+        guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
+            print("Can't register menu bar extra state observer: Can't find status item. It may not yet exist.")
+            return nil
+        }
+        
+        guard let observer = statusItem.stateObserverMenuBased(handler)
+        else {
+            print("Can't register menu bar extra state observer: Can't generate publisher.")
+            return nil
+        }
+        
+        return observer
     }
 }
 

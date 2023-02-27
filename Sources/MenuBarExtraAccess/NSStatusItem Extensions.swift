@@ -51,11 +51,11 @@ extension NSStatusItem {
 
 extension NSStatusItem {
     internal class ButtonStateObserver: NSObject {
-        @objc private weak var objectToObserve: NSButton?
+        @objc private weak var objectToObserve: NSStatusBarButton?
         private var observation: NSKeyValueObservation?
         
         init(
-            object: NSButton,
+            object: NSStatusBarButton,
             _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>)
                 -> Void
         ) {
@@ -88,16 +88,5 @@ extension NSStatusItem {
     
     internal func buttonStatePublisher() -> ButtonStatePublisher? {
         button?.publisher(for: \.cell!.state, options: [.initial, .new])
-    }
-}
-
-extension NSWindow /* actually NSStatusBarWindow but it's a private AppKit type */ {
-    /// When called on an `NSStatusBarWindow` instance, returns the associated `NSStatusItem`.
-    /// Always returns `nil` for any other `NSWindow` subclass.
-    @_disfavoredOverload
-    public func fetchStatusItem() -> NSStatusItem? {
-        // statusItem is a private key not exposed to Swift but we can get it using Key-Value coding
-        value(forKey: "statusItem") as? NSStatusItem
-        ?? Mirror(reflecting: self).descendant("statusItem") as? NSStatusItem
     }
 }
