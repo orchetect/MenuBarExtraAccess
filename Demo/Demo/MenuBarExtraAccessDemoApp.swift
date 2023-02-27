@@ -16,6 +16,16 @@ struct MenuBarExtraAccessDemoApp: App {
     @State var isMenu4Presented: Bool = false
     
     var body: some Scene {
+        WindowGroup {
+            ContentView(
+                isMenu0Presented: $isMenu0Presented,
+                isMenu1Presented: $isMenu1Presented,
+                isMenu2Presented: $isMenu2Presented,
+                isMenu3Presented: $isMenu3Presented,
+                isMenu4Presented: $isMenu4Presented
+            )
+        }.windowResizability(.contentSize)
+        
         // standard menu
         MenuBarExtra("Menu: Index 0", systemImage: "0.circle.fill") {
             Button("Menu Item A") { print("Menu Item A") }
@@ -59,16 +69,6 @@ struct MenuBarExtraAccessDemoApp: App {
         }
         .menuBarExtraAccess(index: 4, isPresented: $isMenu4Presented)
         .menuBarExtraStyle(.window)
-        
-        Settings {
-            SettingsView(
-                isMenu0Presented: $isMenu0Presented,
-                isMenu1Presented: $isMenu1Presented,
-                isMenu2Presented: $isMenu2Presented,
-                isMenu3Presented: $isMenu3Presented,
-                isMenu4Presented: $isMenu4Presented
-            )
-        }.windowResizability(.contentSize)
     }
 }
 
@@ -77,16 +77,21 @@ struct MenuBarView: View {
     @Binding var isMenuPresented: Bool
     
     var body: some View {
-        VStack {
+        VStack(spacing: 40) {
+            Image(systemName: "\(index).circle.fill")
+                .resizable()
+                .foregroundColor(.secondary)
+                .frame(width: 80, height: 80)
             Button("Close Menu") {
                 isMenuPresented = false
             }
         }
-        .frame(width: 450, height: 200)
+        .padding()
+        .frame(width: 250, height: 300)
     }
 }
 
-struct SettingsView: View {
+struct ContentView: View {
     @Binding var isMenu0Presented: Bool
     @Binding var isMenu1Presented: Bool
     @Binding var isMenu2Presented: Bool
@@ -94,15 +99,15 @@ struct SettingsView: View {
     @Binding var isMenu4Presented: Bool
     
     var body: some View {
-        VStack {
-            MenuStateView(num: 0, isMenuPresented: $isMenu0Presented)
-            MenuStateView(num: 1, isMenuPresented: $isMenu1Presented)
-            MenuStateView(num: 2, isMenuPresented: $isMenu2Presented)
-            MenuStateView(num: 3, isMenuPresented: $isMenu3Presented)
+        HStack(spacing: 20) {
             MenuStateView(num: 4, isMenuPresented: $isMenu4Presented)
+            MenuStateView(num: 3, isMenuPresented: $isMenu3Presented)
+            MenuStateView(num: 2, isMenuPresented: $isMenu2Presented)
+            MenuStateView(num: 1, isMenuPresented: $isMenu1Presented)
+            MenuStateView(num: 0, isMenuPresented: $isMenu0Presented)
         }
         .padding()
-        .frame(minWidth: 400)
+        .frame(minWidth: 380, minHeight: 160)
     }
     
     struct MenuStateView: View {
@@ -110,27 +115,13 @@ struct SettingsView: View {
         @Binding var isMenuPresented: Bool
         
         var body: some View {
-            HStack {
-                Text("Menu \(num):")
-                Button("Open") { isMenuPresented = true }
-                    .bold(isMenuPresented)
-                
-                Button("Close") { isMenuPresented = false }
-                    .bold(!isMenuPresented)
-                
-                Button("Toggle") {
-                    isMenuPresented.toggle()
-                }
-                
-                Button("Open Then Close") {
-                    // TODO: this won't work for a menu-based MenuBarExtra because the popup menu blocks the runloop
-                    DispatchQueue.main.async {
-                        isMenuPresented = true
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        isMenuPresented = false
-                    }
-                }
+            VStack(spacing: 20) {
+                Image(systemName: "\(num).circle.fill")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                Toggle("", isOn: $isMenuPresented)
+                    .toggleStyle(.switch)
+                    .labelsHidden()
             }
         }
     }
