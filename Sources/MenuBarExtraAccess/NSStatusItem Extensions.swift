@@ -23,28 +23,10 @@ extension NSStatusItem {
     
     /// Toggles the menu/window state by mimicking a menu item button press.
     @_disfavoredOverload
-    internal func setPresentedMenuBased(state: Bool) {
+    internal func setPresented(state: Bool) {
         // read current state and selectively call toggle if state differs
         let currentState = button?.state != .off
         guard state != currentState else { return }
-        togglePresented()
-    }
-    
-    /// Toggles the menu/window state by mimicking a menu item button press.
-    @_disfavoredOverload
-    internal func setPresentedWindowBased(state: Bool, window: NSWindow?) {
-        // experiment #1:
-        //   - try sending an action that might accomplish this?
-        // invalid selectors: showWindow, hideWindow, closeWindow, close
-        // button?.sendAction(Selector(("showWindow:")), to: button?.target)
-        
-        // experiment #2:
-        // if we follow button.target, perhaps its state could help us
-        // dump(button!.target) // SwiftUI.WindowMenuBarExtraBehavior <<< TELLS US IF IT'S MENU BASED
-        
-        // working solution #1:
-        let isVisible = window?.isVisible == true
-        guard state != isVisible else { return }
         togglePresented()
     }
 }

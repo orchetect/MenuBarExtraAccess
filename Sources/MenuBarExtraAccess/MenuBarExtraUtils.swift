@@ -20,13 +20,7 @@ enum MenuBarExtraUtils {
     /// Set MenuBarExtra menu/window presentation state.
     static func setPresented(for ident: StatusItemIdentity? = nil, state: Bool) {
         guard let item = statusItem(for: ident) else { return }
-        
-        if item.isMenuBarExtraMenuBased {
-            item.setPresentedMenuBased(state: state)
-        } else {
-            let window = window(for: ident)
-            item.setPresentedWindowBased(state: state, window: window)
-        }
+        item.setPresented(state: state)
     }
     
     // MARK: - Objects and Metadata
@@ -217,7 +211,7 @@ extension NSStatusItem {
         // if menu-based, target will be nil
         guard let behavior = button?.target
         else {
-            return false
+            return true
         }
         
         // the rest of this is probably redundant given the check above covers both scenarios.
