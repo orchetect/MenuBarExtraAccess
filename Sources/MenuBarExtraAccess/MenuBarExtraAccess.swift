@@ -94,7 +94,6 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         func setup(
             _ block: @escaping () -> NSStatusItem.ButtonStateObserver?
         ) {
-            guard observer == nil else { return }
             /// run async so that it can execute after SwiftUI sets up the NSStatusItem
             DispatchQueue.main.async { [self] in
                 observer = block()
