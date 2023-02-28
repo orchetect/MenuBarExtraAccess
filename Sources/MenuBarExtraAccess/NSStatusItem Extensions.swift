@@ -19,6 +19,7 @@ extension NSStatusItem {
         // button?.sendAction(actionSelector, to: button?.target)
         
         button?.performClick(button)
+        updateHighlight()
     }
     
     /// Toggles the menu/window state by mimicking a menu item button press.
@@ -26,8 +27,16 @@ extension NSStatusItem {
     internal func setPresented(state: Bool) {
         // read current state and selectively call toggle if state differs
         let currentState = button?.state != .off
-        guard state != currentState else { return }
+        guard state != currentState else {
+            updateHighlight()
+            return
+        }
         togglePresented()
+    }
+    
+    internal func updateHighlight() {
+        let s = button?.state != .off
+        button?.isHighlighted = s
     }
 }
 
