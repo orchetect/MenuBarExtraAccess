@@ -17,6 +17,7 @@ There is no 1st-party MenuBarExtra API to obtain or set the menu presentation st
 
 - A new `.menuBarExtraAccess(isPresented:)` scene modifier with a binding to hide/show/toggle the menu
 - A new `.introspectMenuBarExtraWindow { window in }` view modifier passing in the `NSWindow` reference
+- Window-based menu extra status items now remain highlighted while the window is open so it feels like a native menu
 - No private API used, so it's Mac App Store safe
 
 ## Getting Started
