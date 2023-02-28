@@ -12,7 +12,7 @@ extension View {
     /// If more than one MenuBarExtra are used in the app, provide the sequential index number of the `MenuBarExtra`.
     public func introspectMenuBarExtraWindow(
         index: Int = 0,
-        _ block: @escaping (_ menuBarExtraWindow: NSWindow) -> Void
+        _ block: @escaping (_ window: NSWindow) -> Void
     ) -> some View {
         self
             .onAppear {
