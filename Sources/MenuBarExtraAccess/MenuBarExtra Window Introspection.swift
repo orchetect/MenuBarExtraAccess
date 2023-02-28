@@ -8,6 +8,8 @@ import SwiftUI
 
 extension View {
     /// Provides introspection on the underlying window presented by `MenuBarExtra`.
+    /// Add this view modifier to the top level of the View that occupies the `MenuBarExtra` content.
+    /// If more than one MenuBarExtra are used in the app, provide the sequential index number of the `MenuBarExtra`.
     public func introspectMenuBarExtraWindow(
         index: Int,
         _ block: @escaping (_ menuBarExtraWindow: NSWindow) -> Void

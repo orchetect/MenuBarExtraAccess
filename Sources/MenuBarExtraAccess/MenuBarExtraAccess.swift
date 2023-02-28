@@ -12,6 +12,8 @@ import Combine
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 extension Scene {
+    /// Adds a presentation state binding to `MenuBarExtra`.
+    /// If more than one MenuBarExtra are used in the app, provide the sequential index number of the `MenuBarExtra`.
     public func menuBarExtraAccess(
         index: Int = 0,
         isPresented: Binding<Bool>
