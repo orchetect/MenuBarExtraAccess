@@ -124,6 +124,17 @@ enum MenuBarExtraUtils {
         return observer
     }
     
+    /// Adds global event monitor to catch mouse events outside the application.
+    static func newEventsMonitor(
+        _ handler: @escaping (NSEvent) -> Void
+    ) -> Any? {
+        NSEvent.addGlobalMonitorForEvents(matching: [
+            .leftMouseDown,
+            .rightMouseDown,
+            .otherMouseDown
+        ], handler: handler)
+    }
+    
     static func newPublisher(
         index: Int
     ) -> NSStatusItem.ButtonStatePublisher? {

@@ -75,11 +75,19 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     /// This returns a bogus value, but because we call it in an onChange{} block, SwiftUI
     /// is forced to evaluate the method and run our code at the appropriate time.
     private func observerSetup() -> Int {
-        observerContainer.setup {
+        observerContainer.setupObserver {
             MenuBarExtraUtils.newObserver(index: index) { change in
                 guard let newVal = change.newValue else { return }
                 let newBool = newVal != .off
                 if isMenuPresented != newBool { isMenuPresented = newBool }
+            }
+        }
+        
+        observerContainer.setupEventsMonitor {
+            MenuBarExtraUtils.newEventsMonitor { _ in
+                // close window when user clicks outside of it
+                MenuBarExtraUtils.setPresented(for: .index(index), state: false)
+                isMenuPresented = false
             }
         }
         
@@ -90,15 +98,25 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     
     private class ObserverContainer {
         private var observer: NSStatusItem.ButtonStateObserver?
+        private var eventsMonitor: Any?
         
         init() { }
         
-        func setup(
+        func setupObserver(
             _ block: @escaping () -> NSStatusItem.ButtonStateObserver?
         ) {
             /// run async so that it can execute after SwiftUI sets up the NSStatusItem
             DispatchQueue.main.async { [self] in
                 observer = block()
+            }
+        }
+        
+        func setupEventsMonitor(
+            _ block: @escaping () -> Any?
+        ) {
+            /// run async so that it can execute after SwiftUI sets up the NSStatusItem
+            DispatchQueue.main.async { [self] in
+                eventsMonitor = block()
             }
         }
     }
