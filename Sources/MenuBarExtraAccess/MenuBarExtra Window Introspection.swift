@@ -11,7 +11,7 @@ extension View {
     /// Add this view modifier to the top level of the View that occupies the `MenuBarExtra` content.
     /// If more than one MenuBarExtra are used in the app, provide the sequential index number of the `MenuBarExtra`.
     public func introspectMenuBarExtraWindow(
-        index: Int,
+        index: Int = 0,
         _ block: @escaping (_ menuBarExtraWindow: NSWindow) -> Void
     ) -> some View {
         self
