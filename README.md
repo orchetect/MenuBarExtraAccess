@@ -122,9 +122,14 @@ The hope is that Apple implements this feature (and more) in future iterations o
 
 Until then, a radar has been filed as a feature request: [FB11984872](https://github.com/feedback-assistant/reports/issues/383)
 
+## Menu Builder
+
+Check out [MacControlCenterUI](https://github.com/orchetect/MacControlCenterUI), a SwiftUI package built on MenuBarExtraAccess for easily building Control Center style menus.
+
 ## Known Issues
 
 - When using `.menuBarExtraStyle(.menu)`, the popup menu blocks the runloop so setting the `isPresented` binding to `false` while the menu is presented has no effect. The user must dismiss the menu themself to allow event flow to continue. We have no control over this until Apple decides to change the MenuBarExtra behavior.
+- There are edge cases where the status item gets confused and may invert its state. It may be related to how the underlying `MenuBarExtra` works. This is being investigated and a workaround may be possible for a future release.
 
 ## Author
 
