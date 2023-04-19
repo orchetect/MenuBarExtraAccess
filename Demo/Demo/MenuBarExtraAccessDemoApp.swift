@@ -26,6 +26,9 @@ struct MenuBarExtraAccessDemoApp: App {
             )
         }.windowResizability(.contentSize)
         
+        // 💡 NOTE: There are 5 menu extras here simply to demonstrate (and test)
+        // various implementations of MenuBarExtra
+        
         // standard menu
         MenuBarExtra("Menu: Index 0", systemImage: "0.circle.fill") {
             Button("Menu Item A") { print("Menu Item A") }
@@ -66,6 +69,7 @@ struct MenuBarExtraAccessDemoApp: App {
             MenuBarView(index: 4, isMenuPresented: $isMenu4Presented)
         } label: {
             Image(systemName: "4.circle.fill")
+            Text("Four")
         }
         .menuBarExtraAccess(index: 4, isPresented: $isMenu4Presented)
         .menuBarExtraStyle(.window)
