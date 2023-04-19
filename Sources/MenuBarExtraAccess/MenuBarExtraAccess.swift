@@ -69,7 +69,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     
     // MARK: Observer
     
-    /// A workaround since onAppear {} is not available in a SwiftUI Scene.
+    /// A workaround since `onAppear {}` is not available in a SwiftUI Scene.
     /// We need to set up the observer, but it can't be set up in the scene init because it needs to
     /// update scene state from an escaping closure.
     /// This returns a bogus value, but because we call it in an onChange{} block, SwiftUI

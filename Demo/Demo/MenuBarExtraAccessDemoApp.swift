@@ -29,6 +29,10 @@ struct MenuBarExtraAccessDemoApp: App {
         // 💡 NOTE: There are 5 menu extras here simply to demonstrate (and test)
         // various implementations of MenuBarExtra
         
+        // 💡 NOTE: Even if the menu extras get reordered in the menu bar by the user (by holding Cmd
+        // and dragging them), the indexes still remain consistent with the order in which
+        // the MenuBarExtra definitions appear below.
+        
         // standard menu
         MenuBarExtra("Menu: Index 0", systemImage: "0.circle.fill") {
             Button("Menu Item A") { print("Menu Item A") }
