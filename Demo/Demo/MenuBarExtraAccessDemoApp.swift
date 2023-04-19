@@ -15,6 +15,8 @@ struct MenuBarExtraAccessDemoApp: App {
     @State var isMenu3Presented: Bool = false
     @State var isMenu4Presented: Bool = false
     
+    @State var menu0StatusItem: NSStatusItem?
+    
     var body: some Scene {
         WindowGroup {
             ContentView(
@@ -38,7 +40,13 @@ struct MenuBarExtraAccessDemoApp: App {
             Button("Menu Item A") { print("Menu Item A") }
             Button("Menu Item B") { print("Menu Item B") }
         }
-        .menuBarExtraAccess(index: 0, isPresented: $isMenu0Presented)
+        .menuBarExtraAccess(index: 0, isPresented: $isMenu0Presented) { statusItem in
+            // can do one-time setup of NSStatusItem here
+            statusItem.button?.appearsDisabled = true
+            
+            // or if access to the NSStatusItem is needed later, it may be stored in a local state var
+            menu0StatusItem = statusItem
+        }
         .menuBarExtraStyle(.menu)
         
         // standard menu using named image
@@ -46,6 +54,9 @@ struct MenuBarExtraAccessDemoApp: App {
             Button("Menu Item A") { print("Menu Item A") }
             Button("Menu Item B") { print("Menu Item B") }
             Button("Menu Item C") { print("Menu Item C") }
+            Button("Toggle Menu 0 Disabled State") {
+                menu0StatusItem?.button?.appearsDisabled.toggle()
+            }
         }
         .menuBarExtraAccess(index: 1, isPresented: $isMenu1Presented)
         .menuBarExtraStyle(.menu)

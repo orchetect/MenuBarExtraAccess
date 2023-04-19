@@ -16,13 +16,15 @@ extension Scene {
     /// If more than one MenuBarExtra are used in the app, provide the sequential index number of the `MenuBarExtra`.
     public func menuBarExtraAccess(
         index: Int = 0,
-        isPresented: Binding<Bool>
+        isPresented: Binding<Bool>,
+        statusItem: ((_ statusItem: NSStatusItem) -> Void)? = nil
     ) -> some Scene {
         // FYI: SwiftUI will reinitialize the MenuBarExtra (and this view modifier)
         // if its title/label content changes, so the stored ID is always up-to-date
         
         MenuBarExtraAccess(
             index: index,
+            statusItemIntrospection: statusItem,
             menuBarExtra: self,
             isMenuPresented: isPresented
         )
@@ -35,11 +37,18 @@ extension Scene {
 @available(watchOS, unavailable)
 struct MenuBarExtraAccess<Content: Scene>: Scene {
     let index: Int
+    let statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?
     let menuBarExtra: Content
     @Binding var isMenuPresented: Bool
     
-    init(index: Int, menuBarExtra: Content, isMenuPresented: Binding<Bool>) {
+    init(
+        index: Int,
+        statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?,
+        menuBarExtra: Content,
+        isMenuPresented: Binding<Bool>
+    ) {
         self.index = index
+        self.statusItemIntrospection = statusItemIntrospection
         self.menuBarExtra = menuBarExtra
         self._isMenuPresented = isMenuPresented
     }
@@ -75,6 +84,11 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     /// This returns a bogus value, but because we call it in an onChange{} block, SwiftUI
     /// is forced to evaluate the method and run our code at the appropriate time.
     private func observerSetup() -> Int {
+        observerContainer.setupStatusItemIntrospection {
+            guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else { return }
+            statusItemIntrospection?(statusItem)
+        }
+        
         observerContainer.setupObserver {
             MenuBarExtraUtils.newObserver(index: index) { change in
                 guard let newVal = change.newValue else { return }
@@ -99,8 +113,18 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     private class ObserverContainer {
         private var observer: NSStatusItem.ButtonStateObserver?
         private var eventsMonitor: Any?
+        private var statusItemIntrospectionSetup: Bool = false
         
         init() { }
+        
+        func setupStatusItemIntrospection(
+            _ block: @escaping () -> Void
+        ) {
+            guard !statusItemIntrospectionSetup else { return }
+            DispatchQueue.main.async {
+                block()
+            }
+        }
         
         func setupObserver(
             _ block: @escaping () -> NSStatusItem.ButtonStateObserver?
