@@ -1,0 +1,9 @@
+name: Bug report
+description: Create a bug report about a reproducible problem.
+labels: bug
+body:
+- type: textarea
+  id: bug-description
+  attributes:
+    label: Bug Description, Steps to Reproduce, Crash Logs, Screenshots, etc.
+    description: "A clear and concise description of the bug and steps to reproduce. Include system details (OS version) and build environment particulars (Xcode version, etc.)."
