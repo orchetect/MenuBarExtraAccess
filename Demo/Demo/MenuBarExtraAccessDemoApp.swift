@@ -42,8 +42,6 @@ struct MenuBarExtraAccessDemoApp: App {
         }
         .menuBarExtraAccess(index: 0, isPresented: $isMenu0Presented) { statusItem in
             // can do one-time setup of NSStatusItem here
-            statusItem.button?.appearsDisabled = true
-            
             // or if access to the NSStatusItem is needed later, it may be stored in a local state var
             menu0StatusItem = statusItem
         }
