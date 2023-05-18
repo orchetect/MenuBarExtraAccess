@@ -4,11 +4,11 @@
 
 #### **Gives you *Extra* access to SwiftUI `MenuBarExtra`.**
 
-- Programmatically hide, show, or toggle the menu by way of a standard Bool binding, compatible with:
-  - works with one or [multiple](#Multiple-MenuBarExtra) MenuBarExtra
-  - works with both [`.menu`](#Standard-Menu-Style) and [`.window`](#Window-Style) based styles
-- Access to the `NSStatusItem`
+- Programmatically hide, show, or toggle the menu (by way of a Bool binding)
+- Access to the underlying `NSStatusItem`
 - Access to the underlying `NSWindow` (when using the `.window` style)
+- Works with one or [multiple](#Multiple-MenuBarExtra) `MenuBarExtra`
+- Works with both [`menu`](#Standard-Menu-Style) and [`window`](#Window-Style) based styles (see [Known Issues](#Known-Issues))
 
 #### Why?
 
