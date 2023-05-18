@@ -4,20 +4,24 @@
 
 #### **Gives you *Extra* access to SwiftUI `MenuBarExtra`.**
 
-- Programmatically hide, show, or toggle the menu by way of a standard Bool binding
-  - Fully compatible with one or [multiple](#Multiple-MenuBarExtra) MenuBarExtra
-  - Compatible with both [`.menu`](#Standard-Menu-Style) and [`.window`](#Window-Style) based styles
-- Introspect the underlying `NSWindow` for the `.window` based style
+- Programmatically hide, show, or toggle the menu by way of a standard Bool binding, compatible with:
+  - works with one or [multiple](#Multiple-MenuBarExtra) MenuBarExtra
+  - works with both [`.menu`](#Standard-Menu-Style) and [`.window`](#Window-Style) based styles
+- Access to the `NSStatusItem`
+- Access to the underlying `NSWindow` (when using the `.window` style)
 
 #### Why?
 
-There is no 1st-party MenuBarExtra API to obtain or set the menu presentation state, or access the popup's NSWindow. (As of Xcode 14.3 / SwiftUI 4)
+There is no 1st-party MenuBarExtra API to obtain or set the menu presentation state, access the status item, or access the popup's NSWindow. (As of Xcode 14.3 / SwiftUI 4)
 
-#### How?
+#### Library Features
 
-- A new `.menuBarExtraAccess(isPresented:)` scene modifier with a binding to hide/show/toggle the menu
+- A new `.menuBarExtraAccess(isPresented:) { statusItem in }` scene modifier with
+  - a binding to hide/show/toggle the menu, and
+  - direct access to the `NSStatusItem` if needed
+
 - A new `.introspectMenuBarExtraWindow { window in }` view modifier passing in the `NSWindow` reference
-- Window-based menu extra status items now remain highlighted while the window is open so it feels like a native menu
+- Window-based menu extra status items now remain highlighted while the window is open so it feels more like a native menu
 - No private API used, so it's Mac App Store safe
 
 ## Getting Started
@@ -51,7 +55,9 @@ An example of showing the menu extra menu by clicking a button in a window:
             Button("Menu Item 2") { print("Menu Item 2") }
         }
         .menuBarExtraStyle(.menu)
-        .menuBarExtraAccess(isPresented: $isMenuPresented) // <-- the magic ✨
+        .menuBarExtraAccess(isPresented: $isMenuPresented) { statusItem in // <-- the magic ✨
+             // access status item or store it in a @State var
+        }
     }
 }
 ```
@@ -72,7 +78,9 @@ An example of a button in the popup window dismissing the popup and performing a
                 }
         }
         .menuBarExtraStyle(.window)
-        .menuBarExtraAccess(isPresented: $isMenuPresented) // <-- the magic ✨
+        .menuBarExtraAccess(isPresented: $isMenuPresented) { statusItem in // <-- the magic ✨
+             // access status item or store it in a @State var
+        }
     }
 }
 
@@ -92,7 +100,7 @@ struct MyMenu: View {
 
 MenuBarExtraAccess is fully compatible with one or multiple MenuBarExtra in an app.
 
-Just add an index number parameter to `menuBarExtraAccess` and `introspectMenuBarExtraWindow` like this:
+Just add an index number parameter to `.menuBarExtraAccess()` and `.introspectMenuBarExtraWindow()` that reflects the order of `MenuBarExtra` declarations.
 
 ```swift
 var body: some Scene {
@@ -112,13 +120,13 @@ var body: some Scene {
             }
     }
     .menuBarExtraStyle(.window)
-    .menuBarExtraAccess(index: 1, isPresented: $isMenuPresented) // <-- adde index 1
+    .menuBarExtraAccess(index: 1, isPresented: $isMenuPresented) // <-- add index 1
 }
 ```
 
 ## Future
 
-The hope is that Apple implements this feature (and more) in future iterations of SwiftUI!
+The hope is that Apple implements native versions of these features (and more) in future iterations of SwiftUI!
 
 Until then, a radar has been filed as a feature request: [FB11984872](https://github.com/feedback-assistant/reports/issues/383)
 
