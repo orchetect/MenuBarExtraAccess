@@ -135,7 +135,11 @@ Check out [MacControlCenterUI](https://github.com/orchetect/MacControlCenterUI),
 
 ## Known Issues
 
-- When using `.menuBarExtraStyle(.menu)`, the popup menu blocks the runloop so setting the `isPresented` binding to `false` while the menu is presented has no effect. The user must dismiss the menu themself to allow event flow to continue. We have no control over this until Apple decides to change the MenuBarExtra behavior.
+- When using `.menuBarExtraStyle(.menu)`, SwiftUI causes the popup menu to block the runloop while the menu is open, which means:
+  - Observing the `isPresented` binding will not work as expected.
+  - Setting the `isPresented` binding to `false` while the menu is presented has no effect.
+  - The user must dismiss the menu themself to allow event flow to continue. We have no control over this until Apple decides to change the MenuBarExtra behavior.
+
 - There are edge cases where the status item gets confused and may invert its state. It may be related to how the underlying `MenuBarExtra` works. This is being investigated and a workaround may be possible for a future release.
 
 ## Author
