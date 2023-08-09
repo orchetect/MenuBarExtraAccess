@@ -20,7 +20,7 @@ extension Scene {
         statusItem: ((_ statusItem: NSStatusItem) -> Void)? = nil
     ) -> some Scene {
         // FYI: SwiftUI will reinitialize the MenuBarExtra (and this view modifier)
-        // if its title/label content changes, so the stored ID is always up-to-date
+        // if its title/label content changes, which means the stored ID will always be up-to-date
         
         MenuBarExtraAccess(
             index: index,
@@ -61,11 +61,11 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             .onChange(of: isMenuPresented) { newValue in
                 setPresented(newValue)
             }
-            //.onChange(of: isToggling) { newValue in
+            // .onChange(of: isToggling) { newValue in
             //    guard newValue == true else { return }
             //    togglePresented()
             //    isToggling = false
-            //}
+            // }
     }
     
     private func togglePresented() {
@@ -81,7 +81,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     /// A workaround since `onAppear {}` is not available in a SwiftUI Scene.
     /// We need to set up the observer, but it can't be set up in the scene init because it needs to
     /// update scene state from an escaping closure.
-    /// This returns a bogus value, but because we call it in an onChange{} block, SwiftUI
+    /// This returns a bogus value, but because we call it in an `onChange {}` block, SwiftUI
     /// is forced to evaluate the method and run our code at the appropriate time.
     private func observerSetup() -> Int {
         observerContainer.setupStatusItemIntrospection {
@@ -121,6 +121,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             _ block: @escaping () -> Void
         ) {
             guard !statusItemIntrospectionSetup else { return }
+            // run async so that it can execute after SwiftUI sets up the NSStatusItem
             DispatchQueue.main.async {
                 block()
             }
@@ -129,7 +130,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         func setupObserver(
             _ block: @escaping () -> NSStatusItem.ButtonStateObserver?
         ) {
-            /// run async so that it can execute after SwiftUI sets up the NSStatusItem
+            // run async so that it can execute after SwiftUI sets up the NSStatusItem
             DispatchQueue.main.async { [self] in
                 observer = block()
             }
@@ -138,7 +139,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         func setupEventsMonitor(
             _ block: @escaping () -> Any?
         ) {
-            /// run async so that it can execute after SwiftUI sets up the NSStatusItem
+            // run async so that it can execute after SwiftUI sets up the NSStatusItem
             DispatchQueue.main.async { [self] in
                 eventsMonitor = block()
             }
