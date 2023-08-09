@@ -70,7 +70,8 @@ struct MenuBarExtraAccessDemoApp: App {
         MenuBarExtra("Menu: Index 3", image: "3.circle.fill") {
             MenuBarView(index: 3, isMenuPresented: $isMenu3Presented)
                 .introspectMenuBarExtraWindow(index: 3) { window in
-                    // just to demonstrate introspection, but looks a bit weird
+                    // just to demonstrate introspection, but animationBehavior
+                    // shouldn't typically be modified for a MenuBarExtra window
                     window.animationBehavior = .alertPanel
                 }
         }
