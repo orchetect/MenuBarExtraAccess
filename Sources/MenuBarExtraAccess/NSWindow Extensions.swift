@@ -4,6 +4,8 @@
 //  © 2023 Steffan Andrews • Licensed under MIT License
 //
 
+#if os(macOS)
+
 import AppKit
 
 extension NSWindow /* actually NSStatusBarWindow but it's a private AppKit type */ {
@@ -16,3 +18,5 @@ extension NSWindow /* actually NSStatusBarWindow but it's a private AppKit type 
         ?? Mirror(reflecting: self).descendant("statusItem") as? NSStatusItem
     }
 }
+
+#endif

@@ -4,6 +4,8 @@
 //  © 2023 Steffan Andrews • Licensed under MIT License
 //
 
+#if os(macOS)
+
 import SwiftUI
 import Combine
 
@@ -48,3 +50,5 @@ extension Scene {
         return nil
     }
 }
+
+#endif

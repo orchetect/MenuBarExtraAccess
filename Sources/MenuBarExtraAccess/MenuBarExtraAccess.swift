@@ -4,6 +4,8 @@
 //  © 2023 Steffan Andrews • Licensed under MIT License
 //
 
+#if os(macOS)
+
 import SwiftUI
 import Combine
 
@@ -146,3 +148,5 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         }
     }
 }
+
+#endif
