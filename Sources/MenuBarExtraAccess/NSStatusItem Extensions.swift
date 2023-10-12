@@ -51,8 +51,7 @@ extension NSStatusItem {
         
         init(
             object: NSStatusBarButton,
-            _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>)
-                -> Void
+            _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
         ) {
             objectToObserve = object
             super.init()
@@ -75,8 +74,8 @@ extension NSStatusItem {
         _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
     ) -> ButtonStateObserver? {
         guard let button else { return nil }
-        let newObserver = ButtonStateObserver(object: button, handler)
-        return newObserver
+        let newStatusItemButtonStateObserver = ButtonStateObserver(object: button, handler)
+        return newStatusItemButtonStateObserver
     }
 }
 

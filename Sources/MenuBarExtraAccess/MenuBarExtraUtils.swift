@@ -108,7 +108,7 @@ enum MenuBarExtraUtils {
     // MARK: - Observer
     
     /// Call from MenuBarExtraAccess init to set up observer.
-    static func newObserver(
+    static func newStatusItemButtonStateObserver(
         index: Int,
         _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
     ) -> NSStatusItem.ButtonStateObserver? {
@@ -127,7 +127,7 @@ enum MenuBarExtraUtils {
     }
     
     /// Adds global event monitor to catch mouse events outside the application.
-    static func newEventsMonitor(
+    static func newGlobalMouseDownEventsMonitor(
         _ handler: @escaping (NSEvent) -> Void
     ) -> Any? {
         NSEvent.addGlobalMonitorForEvents(matching: [
@@ -137,7 +137,18 @@ enum MenuBarExtraUtils {
         ], handler: handler)
     }
     
-    static func newPublisher(
+    /// Adds local event monitor to catch mouse events within the application.
+    static func newLocalMouseDownEventsMonitor(
+        _ handler: @escaping (NSEvent) -> NSEvent?
+    ) -> Any? {
+        NSEvent.addLocalMonitorForEvents(matching: [
+            .leftMouseDown,
+            .rightMouseDown,
+            .otherMouseDown
+        ], handler: handler)
+    }
+    
+    static func newStatusItemButtonStatePublisher(
         index: Int
     ) -> NSStatusItem.ButtonStatePublisher? {
         guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
@@ -154,12 +165,12 @@ enum MenuBarExtraUtils {
         return publisher
     }
     
-    /// Wraps `newPublisher` in a sink.
-    static func newPublisherSink(
+    /// Wraps `newStatusItemButtonStatePublisher` in a sink.
+    static func newStatusItemButtonStatePublisherSink(
         index: Int,
         block: @escaping (_ newValue: NSControl.StateValue?) -> Void
     ) -> AnyCancellable? {
-        newPublisher(index: index)?
+        newStatusItemButtonStatePublisher(index: index)?
             .flatMap { value in
                 Just(value)
                     .tryMap { value throws -> NSControl.StateValue in value }

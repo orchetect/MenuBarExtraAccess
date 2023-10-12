@@ -63,11 +63,6 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             .onChange(of: isMenuPresented) { newValue in
                 setPresented(newValue)
             }
-            // .onChange(of: isToggling) { newValue in
-            //    guard newValue == true else { return }
-            //    togglePresented()
-            //    isToggling = false
-            // }
     }
     
     private func togglePresented() {
@@ -91,16 +86,21 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             statusItemIntrospection?(statusItem)
         }
         
-        observerContainer.setupObserver {
-            MenuBarExtraUtils.newObserver(index: index) { change in
+        // note that we can't use the button state value itself since MenuBarExtra seems to treat it
+        // as a toggle and not an absolute on/off value. Its polarity can invert itself when clicking
+        // in an empty area of the menubar or a different app's status item in order to dismiss the window,
+        // for example.
+        observerContainer.setupStatusItemButtonStateObserver {
+            MenuBarExtraUtils.newStatusItemButtonStateObserver(index: index) { change in
                 guard let newVal = change.newValue else { return }
                 let newBool = newVal != .off
                 if isMenuPresented != newBool { isMenuPresented = newBool }
             }
         }
         
-        observerContainer.setupEventsMonitor {
-            MenuBarExtraUtils.newEventsMonitor { _ in
+        observerContainer.setupGlobalMouseDownMonitor {
+            // note that this won't fire when mouse events within the app cause the window to dismiss
+            MenuBarExtraUtils.newGlobalMouseDownEventsMonitor { event in
                 // close window when user clicks outside of it
                 MenuBarExtraUtils.setPresented(for: .index(index), state: false)
                 isMenuPresented = false
@@ -129,7 +129,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             }
         }
         
-        func setupObserver(
+        func setupStatusItemButtonStateObserver(
             _ block: @escaping () -> NSStatusItem.ButtonStateObserver?
         ) {
             // run async so that it can execute after SwiftUI sets up the NSStatusItem
@@ -138,11 +138,16 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             }
         }
         
-        func setupEventsMonitor(
+        func setupGlobalMouseDownMonitor(
             _ block: @escaping () -> Any?
         ) {
             // run async so that it can execute after SwiftUI sets up the NSStatusItem
             DispatchQueue.main.async { [self] in
+                // tear down old monitor, if one exists
+                if let eventsMonitor = eventsMonitor {
+                    NSEvent.removeMonitor(eventsMonitor)
+                }
+                
                 eventsMonitor = block()
             }
         }
