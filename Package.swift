@@ -9,7 +9,10 @@ let package = Package(
         .library(name: "MenuBarExtraAccess", targets: ["MenuBarExtraAccess"])
     ],
     targets: [
-        .target(name: "MenuBarExtraAccess"),
-        .testTarget(name: "MenuBarExtraAccessTests", dependencies: ["MenuBarExtraAccess"])
+        .target(
+            name: "MenuBarExtraAccess",
+            swiftSettings: [.define("DEBUG", .when(configuration: .debug))]
+        ),
+        .testTarget(name: "MenuBarExtraAccessTests", dependencies: ["MenuBarExtraAccess"]),
     ]
 )
