@@ -16,11 +16,19 @@ enum MenuBarExtraUtils {
     
     /// Toggle MenuBarExtra menu/window presentation state.
     static func togglePresented(for ident: StatusItemIdentity? = nil) {
+        #if DEBUG
+        print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil")")
+        #endif
+        
         statusItem(for: ident)?.togglePresented()
     }
     
     /// Set MenuBarExtra menu/window presentation state.
     static func setPresented(for ident: StatusItemIdentity? = nil, state: Bool) {
+        #if DEBUG
+        print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil") with state \(state)")
+        #endif
+        
         guard let item = statusItem(for: ident) else { return }
         item.setPresented(state: state)
     }
@@ -91,7 +99,10 @@ enum MenuBarExtraUtils {
         switch ident {
         case .id(let menuBarExtraID):
             guard let match = menuBarWindows.first(where: { $0.menuBarExtraID == menuBarExtraID }) else {
-                print("Window could not be found for status item with ID \"\(menuBarExtraID).")
+                #if DEBUG
+                print("MenuBarExtraUtils.\(#function): Window could not be found for status item with ID \"\(menuBarExtraID).")
+                #endif
+                
                 return nil
             }
             return match
@@ -113,13 +124,19 @@ enum MenuBarExtraUtils {
         _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
     ) -> NSStatusItem.ButtonStateObserver? {
         guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
+            #if DEBUG
             print("Can't register menu bar extra state observer: Can't find status item. It may not yet exist.")
+            #endif
+            
             return nil
         }
         
         guard let observer = statusItem.stateObserverMenuBased(handler)
         else {
+            #if DEBUG
             print("Can't register menu bar extra state observer: Can't generate observer.")
+            #endif
+            
             return nil
         }
         
@@ -130,35 +147,47 @@ enum MenuBarExtraUtils {
     static func newGlobalMouseDownEventsMonitor(
         _ handler: @escaping (NSEvent) -> Void
     ) -> Any? {
-        NSEvent.addGlobalMonitorForEvents(matching: [
-            .leftMouseDown,
-            .rightMouseDown,
-            .otherMouseDown
-        ], handler: handler)
+        NSEvent.addGlobalMonitorForEvents(
+            matching: [
+                .leftMouseDown,
+                .rightMouseDown,
+                .otherMouseDown
+            ],
+            handler: handler
+        )
     }
     
     /// Adds local event monitor to catch mouse events within the application.
     static func newLocalMouseDownEventsMonitor(
         _ handler: @escaping (NSEvent) -> NSEvent?
     ) -> Any? {
-        NSEvent.addLocalMonitorForEvents(matching: [
-            .leftMouseDown,
-            .rightMouseDown,
-            .otherMouseDown
-        ], handler: handler)
+        NSEvent.addLocalMonitorForEvents(
+            matching: [
+                .leftMouseDown,
+                .rightMouseDown,
+                .otherMouseDown
+            ],
+            handler: handler
+        )
     }
     
     static func newStatusItemButtonStatePublisher(
         index: Int
     ) -> NSStatusItem.ButtonStatePublisher? {
         guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
+            #if DEBUG
             print("Can't register menu bar extra state observer: Can't find status item. It may not yet exist.")
+            #endif
+            
             return nil
         }
         
         guard let publisher = statusItem.buttonStatePublisher()
         else {
+            #if DEBUG
             print("Can't register menu bar extra state observer: Can't generate publisher.")
+            #endif
+            
             return nil
         }
         
@@ -185,6 +214,17 @@ enum MenuBarExtraUtils {
 enum StatusItemIdentity {
     case index(Int)
     case id(String)
+}
+
+extension StatusItemIdentity: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .index(let int):
+            return "index \(int)"
+        case .id(let string):
+            return "ID \"\(string)\""
+        }
+    }
 }
 
 extension NSStatusItem {
@@ -222,7 +262,10 @@ extension NSStatusItem {
         guard let behavior = button?.target, // SwiftUI.WindowMenuBarExtraBehavior <- internal
               let mirror = Mirror(reflecting: behavior).superclassMirror
         else {
+            #if DEBUG
             print("Could not find status item's target.")
+            #endif
+            
             return nil
         }
 
@@ -241,7 +284,10 @@ extension NSStatusItem {
         // however, WindowMenuBarExtraBehavior does contain an explicit `isMenuBased` Bool we can read
         guard let mirror = Mirror(reflecting: behavior).superclassMirror
         else {
+            #if DEBUG
             print("Could not find status item's target.")
+            #endif
+            
             return false
         }
         
@@ -297,7 +343,9 @@ extension Mirror {
             return hashed
         }
         
+        #if DEBUG
         print("Could not determine MenuBarExtra ID")
+        #endif
         
         return nil
     }

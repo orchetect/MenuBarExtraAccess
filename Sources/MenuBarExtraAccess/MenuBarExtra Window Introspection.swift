@@ -19,7 +19,10 @@ extension View {
         self
             .onAppear {
                 guard let window = MenuBarExtraUtils.window(for: .index(index)) else {
+                    #if DEBUG
                     print("Cannot call introspection block for status item because its window could not be found.")
+                    #endif
+                    
                     return
                 }
                 

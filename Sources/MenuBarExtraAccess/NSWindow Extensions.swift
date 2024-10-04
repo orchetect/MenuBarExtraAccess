@@ -15,7 +15,7 @@ extension NSWindow /* actually NSStatusBarWindow but it's a private AppKit type 
     func fetchStatusItem() -> NSStatusItem? {
         // statusItem is a private key not exposed to Swift but we can get it using Key-Value coding
         value(forKey: "statusItem") as? NSStatusItem
-        ?? Mirror(reflecting: self).descendant("statusItem") as? NSStatusItem
+            ?? Mirror(reflecting: self).descendant("statusItem") as? NSStatusItem
     }
 }
 

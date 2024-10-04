@@ -92,17 +92,37 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         // for example.
         observerContainer.setupStatusItemButtonStateObserver {
             MenuBarExtraUtils.newStatusItemButtonStateObserver(index: index) { change in
+                #if DEBUG
+                print("Status item button state observer: called with change: \(change.newValue?.description ?? "nil")")
+                #endif
+                
                 guard let newVal = change.newValue else { return }
                 let newBool = newVal != .off
-                if isMenuPresented != newBool { isMenuPresented = newBool }
+                if isMenuPresented != newBool {
+                    #if DEBUG
+                    print("Status item button state observer: Setting isMenuPresented to \(newBool)")
+                    #endif
+                    
+                    isMenuPresented = newBool
+                }
             }
         }
         
         observerContainer.setupGlobalMouseDownMonitor {
             // note that this won't fire when mouse events within the app cause the window to dismiss
             MenuBarExtraUtils.newGlobalMouseDownEventsMonitor { event in
+                #if DEBUG
+                print("Global mouse-down events monitor: called with event: \(event.type)")
+                #endif
+                
                 // close window when user clicks outside of it
+                
                 MenuBarExtraUtils.setPresented(for: .index(index), state: false)
+                
+                #if DEBUG
+                print("Global mouse-down events monitor: Setting isMenuPresented to false")
+                #endif
+                
                 isMenuPresented = false
             }
         }
