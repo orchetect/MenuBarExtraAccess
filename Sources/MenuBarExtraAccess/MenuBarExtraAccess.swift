@@ -150,6 +150,16 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
                 print("MenuBarExtra index \(index) drop-down window did resign as key.")
                 #endif
                 
+                // it's possible for a window to resign key without actually closing, so let's
+                // close it as a failsafe.
+                if window.isVisible {
+                    #if DEBUG
+                    print("Closing MenuBarExtra index \(index) drop-down window as a result of it resigning as key.")
+                    #endif
+                    
+                    window.close()
+                }
+                
                 MenuBarExtraUtils.setKnownPresented(for: .index(index), state: false)
                 isMenuPresented = false
             }
