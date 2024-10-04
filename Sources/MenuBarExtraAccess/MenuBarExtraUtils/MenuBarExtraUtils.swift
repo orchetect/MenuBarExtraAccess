@@ -32,9 +32,11 @@ enum MenuBarExtraUtils {
         guard let item = statusItem(for: ident) else { return }
         item.setPresented(state: state)
     }
-    
-    // MARK: - Objects and Metadata
-    
+}
+
+// MARK: - Objects and Metadata
+
+extension MenuBarExtraUtils {
     /// Returns the underlying status item(s) created by `MenuBarExtra` instances.
     ///
     /// Each `MenuBarExtra` creates one status item.
@@ -115,9 +117,11 @@ enum MenuBarExtraUtils {
             }
         }
     }
-    
-    // MARK: - Observer
-    
+}
+
+// MARK: - Observers
+
+extension MenuBarExtraUtils {
     /// Call from MenuBarExtraAccess init to set up observer.
     static func newStatusItemButtonStateObserver(
         index: Int,
@@ -211,21 +215,7 @@ enum MenuBarExtraUtils {
     }
 }
 
-enum StatusItemIdentity {
-    case index(Int)
-    case id(String)
-}
-
-extension StatusItemIdentity: CustomStringConvertible {
-    var description: String {
-        switch self {
-        case .index(let int):
-            return "index \(int)"
-        case .id(let string):
-            return "ID \"\(string)\""
-        }
-    }
-}
+// MARK: - NSStatusItem Introspection
 
 extension NSStatusItem {
     var menuBarExtraIndex: Int {
@@ -295,6 +285,8 @@ extension NSStatusItem {
     }
 }
 
+// MARK: - NSWindow Introspection
+
 extension NSWindow {
     fileprivate var menuBarExtraID: String? {
         // Note: this is not ideal, but it's currently the ONLY way to achieve this
@@ -357,6 +349,8 @@ extension Mirror {
         ) as? Bool ?? false
     }
 }
+
+// MARK: - Misc.
 
 extension MenuBarExtraUtils {
     static func hash(anyView: any View) -> String {

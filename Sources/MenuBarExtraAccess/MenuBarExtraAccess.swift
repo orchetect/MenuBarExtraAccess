@@ -130,6 +130,8 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         return 0
     }
     
+    // MARK: Observers
+    
     private var observerContainer = ObserverContainer()
     
     private class ObserverContainer {
