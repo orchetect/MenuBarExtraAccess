@@ -129,7 +129,7 @@ struct ContentView: View {
             Text("""
                 Try opening and closing the menus in the status bar. The toggles will update in response because the state binding is being updated. Clicking on the toggles will also open or close the menus by setting the binding value.")
                 
-                Note that due to how Apple implemented MenuBarExtra, menu-based status items hijack the main runloop and therefore you won't see state update here if you click on their status bar button. Additionally, they cannot be dismissed by setting the binding to false because no SwiftUI date updates occur while the menu is open - the user must select a menu item or dismiss the menu. But the menu can be opened programmatically by setting the binding to true.
+                Note that due to how Apple implemented MenuBarExtra, menu-based status items hijack the main runloop and therefore you won't see state update here if you click on their status bar button. Additionally, they cannot be dismissed by setting the binding to false because no SwiftUI state updates occur while the menu is open - the user must select a menu item or dismiss the menu. But the menu can be opened programmatically by setting the binding to true.
                 """
             )
         }
