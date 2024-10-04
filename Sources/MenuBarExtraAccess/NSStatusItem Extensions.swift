@@ -44,6 +44,7 @@ extension NSStatusItem {
         togglePresented()
     }
     
+    @_disfavoredOverload
     internal func updateHighlight() {
         #if DEBUG
         print("NSStatusItem.\(#function) called")
@@ -56,6 +57,16 @@ extension NSStatusItem {
         #endif
         
         button?.isHighlighted = s
+    }
+    
+    /// Only call this when the state of the drop-down window is known.
+    internal func setKnownPresented(state: Bool) {
+        switch state {
+        case true:
+            button?.state = .on
+        case false:
+            button?.state = .off
+        }
     }
 }
 

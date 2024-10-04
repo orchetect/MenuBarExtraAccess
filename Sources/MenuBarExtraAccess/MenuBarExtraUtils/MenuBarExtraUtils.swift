@@ -32,6 +32,16 @@ enum MenuBarExtraUtils {
         guard let item = statusItem(for: ident) else { return }
         item.setPresented(state: state)
     }
+    
+    /// Set MenuBarExtra menu/window presentation state only when its state is reliably known.
+    static func setKnownPresented(for ident: StatusItemIdentity? = nil, state: Bool) {
+        #if DEBUG
+        print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil") with state \(state)")
+        #endif
+        
+        guard let item = statusItem(for: ident) else { return }
+        item.setKnownPresented(state: state)
+    }
 }
 
 // MARK: - Objects and Metadata
@@ -213,6 +223,23 @@ extension MenuBarExtraUtils {
                 block(value)
             })
     }
+    
+    static func newWindowObserver(
+        index: Int,
+        for notification: Notification.Name,
+        block: @escaping (_ window: NSWindow) -> Void
+    ) -> AnyCancellable? {
+        NotificationCenter.default.publisher(for: notification)
+            .filter { output in
+                guard let window = output.object as? NSWindow else { return false }
+                guard let windowWithIndex = MenuBarExtraUtils.window(for: .index(index)) else { return false }
+                return window == windowWithIndex
+            }
+            .sink { output in
+                guard let window = output.object as? NSWindow else { return }
+                block(window)
+            }
+    }
 }
 
 // MARK: - NSStatusItem Introspection
@@ -262,7 +289,7 @@ extension NSStatusItem {
         return mirror.menuBarExtraID()
     }
     
-    fileprivate var isMenuBarExtraMenuBased: Bool {
+    var isMenuBarExtraMenuBased: Bool {
         // if window-based, target will be the internal type SwiftUI.WindowMenuBarExtraBehavior
         // if menu-based, target will be nil
         guard let behavior = button?.target

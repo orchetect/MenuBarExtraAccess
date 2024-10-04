@@ -96,6 +96,12 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
                 print("Status item button state observer: called with change: \(change.newValue?.description ?? "nil")")
                 #endif
                 
+                // only continue if the MenuBarExtra is menu-based.
+                // window-based MenuBarExtras are handled with app-bound window observers instead.
+                guard MenuBarExtraUtils.statusItem(for: .index(index))?
+                    .isMenuBarExtraMenuBased == true
+                else { return }
+                
                 guard let newVal = change.newValue else { return }
                 let newBool = newVal != .off
                 if isMenuPresented != newBool {
@@ -108,24 +114,46 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             }
         }
         
-        observerContainer.setupGlobalMouseDownMonitor {
-            // note that this won't fire when mouse events within the app cause the window to dismiss
-            MenuBarExtraUtils.newGlobalMouseDownEventsMonitor { event in
+        // TODO: this mouse event observer is now redundant and can be deleted in the future
+        
+        // observerContainer.setupGlobalMouseDownMonitor {
+        //     // note that this won't fire when mouse events within the app cause the window to dismiss
+        //     MenuBarExtraUtils.newGlobalMouseDownEventsMonitor { event in
+        //         #if DEBUG
+        //         print("Global mouse-down events monitor: called with event: \(event.type)")
+        //         #endif
+        //
+        //         // close window when user clicks outside of it
+        //
+        //         MenuBarExtraUtils.setPresented(for: .index(index), state: false)
+        //
+        //         #if DEBUG
+        //         print("Global mouse-down events monitor: Setting isMenuPresented to false")
+        //         #endif
+        //
+        //         isMenuPresented = false
+        //     }
+        // }
+        
+        observerContainer.setupWindowObservers(
+            index: index,
+            didBecomeKey: { window in
                 #if DEBUG
-                print("Global mouse-down events monitor: called with event: \(event.type)")
+                print("MenuBarExtra index \(index) drop-down window did become key.")
                 #endif
                 
-                // close window when user clicks outside of it
-                
-                MenuBarExtraUtils.setPresented(for: .index(index), state: false)
-                
+                MenuBarExtraUtils.setKnownPresented(for: .index(index), state: true)
+                isMenuPresented = true
+            },
+            didResignKey: { window in
                 #if DEBUG
-                print("Global mouse-down events monitor: Setting isMenuPresented to false")
+                print("MenuBarExtra index \(index) drop-down window did resign as key.")
                 #endif
                 
+                MenuBarExtraUtils.setKnownPresented(for: .index(index), state: false)
                 isMenuPresented = false
             }
-        }
+        )
         
         return 0
     }
@@ -135,9 +163,11 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     private var observerContainer = ObserverContainer()
     
     private class ObserverContainer {
+        private var statusItemIntrospectionSetup: Bool = false
         private var observer: NSStatusItem.ButtonStateObserver?
         private var eventsMonitor: Any?
-        private var statusItemIntrospectionSetup: Bool = false
+        private var windowDidBecomeKeyObserver: AnyCancellable?
+        private var windowDidResignKeyObserver: AnyCancellable?
         
         init() { }
         
@@ -171,6 +201,26 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
                 }
                 
                 eventsMonitor = block()
+            }
+        }
+        
+        func setupWindowObservers(
+            index: Int,
+            didBecomeKey didBecomeKeyBlock: @escaping (_ window: NSWindow) -> Void,
+            didResignKey didResignKeyBlock: @escaping (_ window: NSWindow) -> Void
+        ) {
+            // run async so that it can execute after SwiftUI sets up the NSStatusItem
+            DispatchQueue.main.async { [self] in
+                windowDidBecomeKeyObserver = MenuBarExtraUtils.newWindowObserver(
+                    index: index,
+                    for: NSWindow.didBecomeKeyNotification
+                ) { window in didBecomeKeyBlock(window) }
+                
+                windowDidResignKeyObserver = MenuBarExtraUtils.newWindowObserver(
+                    index: index,
+                    for: NSWindow.didResignKeyNotification
+                ) { window in didResignKeyBlock(window) }
+                
             }
         }
     }
