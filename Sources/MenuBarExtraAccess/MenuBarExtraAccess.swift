@@ -92,7 +92,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         // for example.
         observerContainer.setupStatusItemButtonStateObserver {
             MenuBarExtraUtils.newStatusItemButtonStateObserver(index: index) { change in
-                #if DEBUG
+                #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                 print("Status item button state observer: called with change: \(change.newValue?.description ?? "nil")")
                 #endif
                 
@@ -105,7 +105,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
                 guard let newVal = change.newValue else { return }
                 let newBool = newVal != .off
                 if isMenuPresented != newBool {
-                    #if DEBUG
+                    #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                     print("Status item button state observer: Setting isMenuPresented to \(newBool)")
                     #endif
                     
@@ -119,7 +119,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         // observerContainer.setupGlobalMouseDownMonitor {
         //     // note that this won't fire when mouse events within the app cause the window to dismiss
         //     MenuBarExtraUtils.newGlobalMouseDownEventsMonitor { event in
-        //         #if DEBUG
+        //         #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         //         print("Global mouse-down events monitor: called with event: \(event.type)")
         //         #endif
         //
@@ -127,7 +127,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         //
         //         MenuBarExtraUtils.setPresented(for: .index(index), state: false)
         //
-        //         #if DEBUG
+        //         #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         //         print("Global mouse-down events monitor: Setting isMenuPresented to false")
         //         #endif
         //
@@ -138,7 +138,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         observerContainer.setupWindowObservers(
             index: index,
             didBecomeKey: { window in
-                #if DEBUG
+                #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                 print("MenuBarExtra index \(index) drop-down window did become key.")
                 #endif
                 
@@ -146,14 +146,14 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
                 isMenuPresented = true
             },
             didResignKey: { window in
-                #if DEBUG
+                #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                 print("MenuBarExtra index \(index) drop-down window did resign as key.")
                 #endif
                 
                 // it's possible for a window to resign key without actually closing, so let's
                 // close it as a failsafe.
                 if window.isVisible {
-                    #if DEBUG
+                    #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                     print("Closing MenuBarExtra index \(index) drop-down window as a result of it resigning as key.")
                     #endif
                     

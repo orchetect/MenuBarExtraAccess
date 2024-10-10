@@ -16,7 +16,7 @@ enum MenuBarExtraUtils {
     
     /// Toggle MenuBarExtra menu/window presentation state.
     static func togglePresented(for ident: StatusItemIdentity? = nil) {
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil")")
         #endif
         
@@ -25,7 +25,7 @@ enum MenuBarExtraUtils {
     
     /// Set MenuBarExtra menu/window presentation state.
     static func setPresented(for ident: StatusItemIdentity? = nil, state: Bool) {
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil") with state \(state)")
         #endif
         
@@ -35,7 +35,7 @@ enum MenuBarExtraUtils {
     
     /// Set MenuBarExtra menu/window presentation state only when its state is reliably known.
     static func setKnownPresented(for ident: StatusItemIdentity? = nil, state: Bool) {
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil") with state \(state)")
         #endif
         
@@ -111,7 +111,7 @@ extension MenuBarExtraUtils {
         switch ident {
         case .id(let menuBarExtraID):
             guard let match = menuBarWindows.first(where: { $0.menuBarExtraID == menuBarExtraID }) else {
-                #if DEBUG
+                #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                 print("MenuBarExtraUtils.\(#function): Window could not be found for status item with ID \"\(menuBarExtraID).")
                 #endif
                 
@@ -138,7 +138,7 @@ extension MenuBarExtraUtils {
         _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
     ) -> NSStatusItem.ButtonStateObserver? {
         guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
-            #if DEBUG
+            #if MENUBAREXTRAACCESS_DEBUG_LOGGING
             print("Can't register menu bar extra state observer: Can't find status item. It may not yet exist.")
             #endif
             
@@ -147,7 +147,7 @@ extension MenuBarExtraUtils {
         
         guard let observer = statusItem.stateObserverMenuBased(handler)
         else {
-            #if DEBUG
+            #if MENUBAREXTRAACCESS_DEBUG_LOGGING
             print("Can't register menu bar extra state observer: Can't generate observer.")
             #endif
             
@@ -189,7 +189,7 @@ extension MenuBarExtraUtils {
         index: Int
     ) -> NSStatusItem.ButtonStatePublisher? {
         guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
-            #if DEBUG
+            #if MENUBAREXTRAACCESS_DEBUG_LOGGING
             print("Can't register menu bar extra state observer: Can't find status item. It may not yet exist.")
             #endif
             
@@ -198,7 +198,7 @@ extension MenuBarExtraUtils {
         
         guard let publisher = statusItem.buttonStatePublisher()
         else {
-            #if DEBUG
+            #if MENUBAREXTRAACCESS_DEBUG_LOGGING
             print("Can't register menu bar extra state observer: Can't generate publisher.")
             #endif
             
@@ -279,7 +279,7 @@ extension NSStatusItem {
         guard let behavior = button?.target, // SwiftUI.WindowMenuBarExtraBehavior <- internal
               let mirror = Mirror(reflecting: behavior).superclassMirror
         else {
-            #if DEBUG
+            #if MENUBAREXTRAACCESS_DEBUG_LOGGING
             print("Could not find status item's target.")
             #endif
             
@@ -301,7 +301,7 @@ extension NSStatusItem {
         // however, WindowMenuBarExtraBehavior does contain an explicit `isMenuBased` Bool we can read
         guard let mirror = Mirror(reflecting: behavior).superclassMirror
         else {
-            #if DEBUG
+            #if MENUBAREXTRAACCESS_DEBUG_LOGGING
             print("Could not find status item's target.")
             #endif
             
@@ -362,7 +362,7 @@ extension Mirror {
             return hashed
         }
         
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("Could not determine MenuBarExtra ID")
         #endif
         

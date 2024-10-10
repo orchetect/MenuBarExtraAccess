@@ -13,7 +13,7 @@ extension NSStatusItem {
     /// Toggles the menu/window state by mimicking a menu item button press.
     @_disfavoredOverload
     public func togglePresented() {
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("NSStatusItem.\(#function) called")
         #endif
         
@@ -31,7 +31,7 @@ extension NSStatusItem {
     /// Toggles the menu/window state by mimicking a menu item button press.
     @_disfavoredOverload
     internal func setPresented(state: Bool) {
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("NSStatusItem.\(#function) called with state: \(state)")
         #endif
         
@@ -46,13 +46,13 @@ extension NSStatusItem {
     
     @_disfavoredOverload
     internal func updateHighlight() {
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("NSStatusItem.\(#function) called")
         #endif
         
         let s = button?.state != .off
         
-        #if DEBUG
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
         print("NSStatusItem.\(#function): State detected as \(s)")
         #endif
         
