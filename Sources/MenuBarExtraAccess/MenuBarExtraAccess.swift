@@ -120,7 +120,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         //     // note that this won't fire when mouse events within the app cause the window to dismiss
         //     MenuBarExtraUtils.newGlobalMouseDownEventsMonitor { event in
         //         #if MENUBAREXTRAACCESS_DEBUG_LOGGING
-        //         print("Global mouse-down events monitor: called with event: \(event.type)")
+        //         print("Global mouse-down events monitor: called with event: \(event.type.name)")
         //         #endif
         //
         //         // close window when user clicks outside of it

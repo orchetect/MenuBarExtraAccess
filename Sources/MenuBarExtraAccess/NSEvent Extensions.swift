@@ -8,9 +8,9 @@
 
 import AppKit
 
-extension NSEvent.EventType: @retroactive CustomStringConvertible {
+extension NSEvent.EventType {
     @_disfavoredOverload
-    public var description: String {
+    public var name: String {
         switch self {
         case .leftMouseDown: return "leftMouseDown"
         case .leftMouseUp: return "leftMouseUp"

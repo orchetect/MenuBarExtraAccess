@@ -8,9 +8,9 @@
 
 import AppKit
 
-extension NSControl.StateValue: @retroactive CustomStringConvertible {
+extension NSControl.StateValue {
     @_disfavoredOverload
-    public var description: String {
+    public var name: String {
         switch self {
         case .on: 
             return "on"
