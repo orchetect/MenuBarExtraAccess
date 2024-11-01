@@ -1,6 +1,6 @@
 # MenuBarExtraAccess
 
-[![Platforms - macOS 13.0](https://img.shields.io/badge/platforms-macOS%2013.0-lightgrey.svg?style=flat)](https://developer.apple.com/swift) ![Swift 5.7-5.8](https://img.shields.io/badge/Swift-5.7–5.8-orange.svg?style=flat) [![Xcode 14](https://img.shields.io/badge/Xcode-14-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/MenuBarExtraAccess/blob/main/LICENSE)
+[![Platforms - macOS 13.0](https://img.shields.io/badge/platforms-macOS%2013.0-blue.svg?style=flat)](https://developer.apple.com/swift) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2FMenuBarExtraAccess%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/MenuBarExtraAccess) [![Xcode 14](https://img.shields.io/badge/Xcode-14-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/MenuBarExtraAccess/blob/main/LICENSE)
 
 #### **Gives you *Extra* access to SwiftUI `MenuBarExtra`.**
 
@@ -12,7 +12,7 @@
 
 #### Why?
 
-There is no 1st-party MenuBarExtra API to obtain or set the menu presentation state, access the status item, or access the popup's NSWindow. (As of Xcode 14.3 / SwiftUI 4)
+There is no 1st-party MenuBarExtra API to get or set the menu presentation state, access the status item, or access the popup's NSWindow. (Still as of Xcode 16.1)
 
 #### Library Features
 
@@ -139,8 +139,6 @@ Check out [MacControlCenterUI](https://github.com/orchetect/MacControlCenterUI),
   - Observing the `isPresented` binding will not work as expected.
   - Setting the `isPresented` binding to `false` while the menu is presented has no effect.
   - The user must dismiss the menu themself to allow event flow to continue. We have no control over this until Apple decides to change the MenuBarExtra behavior.
-
-- There are edge cases where the status item gets confused and may invert its state. It may be related to how the underlying `MenuBarExtra` works. This is being investigated and a workaround may be possible for a future release.
 
 ## Author
 
