@@ -3,14 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		E212FC1B295167E4007E27BB /* MenuBarExtraAccessDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E212FC1A295167E4007E27BB /* MenuBarExtraAccessDemoApp.swift */; };
 		E212FC1F295167E5007E27BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E212FC1E295167E5007E27BB /* Assets.xcassets */; };
 		E214EC0D2CAFA71200B91076 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E214EC0C2CAFA71200B91076 /* ContentView.swift */; };
-		E2CCDC9929AB09D100C21DBA /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E2CCDC9829AB09D100C21DBA /* MenuBarExtraAccess */; };
+		E2C1790B2CF45CCD00BE21A1 /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E2C1790A2CF45CCD00BE21A1 /* MenuBarExtraAccess */; };
 		E2ED15CD2CAFA6B100972C1A /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ED15CC2CAFA6B100972C1A /* MenuBarView.swift */; };
 /* End PBXBuildFile section */
 
@@ -20,7 +20,6 @@
 		E212FC1E295167E5007E27BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E212FC23295167E5007E27BB /* MenuBarExtraAccessDemoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MenuBarExtraAccessDemoApp.entitlements; sourceTree = "<group>"; };
 		E214EC0C2CAFA71200B91076 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		E2CCDC9629AB09C500C21DBA /* MenuBarExtraAccess */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MenuBarExtraAccess; path = ..; sourceTree = "<group>"; };
 		E2ED15CC2CAFA6B100972C1A /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -29,7 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2CCDC9929AB09D100C21DBA /* MenuBarExtraAccess in Frameworks */,
+				E2C1790B2CF45CCD00BE21A1 /* MenuBarExtraAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,7 +38,6 @@
 		E212FC0E295167E4007E27BB = {
 			isa = PBXGroup;
 			children = (
-				E2CCDC9629AB09C500C21DBA /* MenuBarExtraAccess */,
 				E212FC19295167E4007E27BB /* Demo */,
 				E212FC18295167E4007E27BB /* Products */,
 			);
@@ -82,7 +80,7 @@
 			);
 			name = Demo;
 			packageProductDependencies = (
-				E2CCDC9829AB09D100C21DBA /* MenuBarExtraAccess */,
+				E2C1790A2CF45CCD00BE21A1 /* MenuBarExtraAccess */,
 			);
 			productName = "MacControlCenterSlider Demo";
 			productReference = E212FC17295167E4007E27BB /* Demo.app */;
@@ -112,6 +110,9 @@
 				Base,
 			);
 			mainGroup = E212FC0E295167E4007E27BB;
+			packageReferences = (
+				E2C179092CF45CCD00BE21A1 /* XCLocalSwiftPackageReference "../../MenuBarExtraAccess" */,
+			);
 			productRefGroup = E212FC18295167E4007E27BB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -340,8 +341,15 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		E2C179092CF45CCD00BE21A1 /* XCLocalSwiftPackageReference "../../MenuBarExtraAccess" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../MenuBarExtraAccess;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		E2CCDC9829AB09D100C21DBA /* MenuBarExtraAccess */ = {
+		E2C1790A2CF45CCD00BE21A1 /* MenuBarExtraAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MenuBarExtraAccess;
 		};
