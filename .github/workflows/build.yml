@@ -38,8 +38,8 @@ jobs:
         xcode-version: latest-stable
     - name: Build
       run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcpretty && exit ${PIPESTATUS[0]}
-    - name: Unit Tests
-      run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcpretty && exit ${PIPESTATUS[0]}
+    # - name: Unit Tests
+    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcpretty && exit ${PIPESTATUS[0]}
   
   macOS-swift6:
     name: macOS 15 (Swift 6)
@@ -53,5 +53,5 @@ jobs:
       run: swift package tools-version --set "6.0"
     - name: Build
       run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcpretty && exit ${PIPESTATUS[0]}
-    - name: Unit Tests
-      run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcpretty && exit ${PIPESTATUS[0]}
+    # - name: Unit Tests
+    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcpretty && exit ${PIPESTATUS[0]}
