@@ -11,6 +11,7 @@ import SwiftUI
 import Combine
 
 /// Global static utility methods for interacting the app's menu bar extras (status items).
+@MainActor
 enum MenuBarExtraUtils {
     // MARK: - Menu Extra Manipulation
     
@@ -46,6 +47,7 @@ enum MenuBarExtraUtils {
 
 // MARK: - Objects and Metadata
 
+@MainActor
 extension MenuBarExtraUtils {
     /// Returns the underlying status item(s) created by `MenuBarExtra` instances.
     ///
@@ -131,11 +133,12 @@ extension MenuBarExtraUtils {
 
 // MARK: - Observers
 
+@MainActor
 extension MenuBarExtraUtils {
     /// Call from MenuBarExtraAccess init to set up observer.
     static func newStatusItemButtonStateObserver(
         index: Int,
-        _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
+        _ handler: @MainActor @escaping @Sendable (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
     ) -> NSStatusItem.ButtonStateObserver? {
         guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
             #if MENUBAREXTRAACCESS_DEBUG_LOGGING
@@ -159,7 +162,7 @@ extension MenuBarExtraUtils {
     
     /// Adds global event monitor to catch mouse events outside the application.
     static func newGlobalMouseDownEventsMonitor(
-        _ handler: @escaping (NSEvent) -> Void
+        _ handler: @escaping @Sendable (NSEvent) -> Void
     ) -> Any? {
         NSEvent.addGlobalMonitorForEvents(
             matching: [
@@ -173,7 +176,7 @@ extension MenuBarExtraUtils {
     
     /// Adds local event monitor to catch mouse events within the application.
     static func newLocalMouseDownEventsMonitor(
-        _ handler: @escaping (NSEvent) -> NSEvent?
+        _ handler: @escaping @Sendable (NSEvent) -> NSEvent?
     ) -> Any? {
         NSEvent.addLocalMonitorForEvents(
             matching: [
@@ -211,7 +214,7 @@ extension MenuBarExtraUtils {
     /// Wraps `newStatusItemButtonStatePublisher` in a sink.
     static func newStatusItemButtonStatePublisherSink(
         index: Int,
-        block: @escaping (_ newValue: NSControl.StateValue?) -> Void
+        block: @MainActor @escaping @Sendable (_ newValue: NSControl.StateValue?) -> Void
     ) -> AnyCancellable? {
         newStatusItemButtonStatePublisher(index: index)?
             .flatMap { value in
@@ -227,7 +230,7 @@ extension MenuBarExtraUtils {
     static func newWindowObserver(
         index: Int,
         for notification: Notification.Name,
-        block: @escaping (_ window: NSWindow) -> Void
+        block: @MainActor @escaping @Sendable (_ window: NSWindow) -> Void
     ) -> AnyCancellable? {
         NotificationCenter.default.publisher(for: notification)
             .filter { output in
@@ -244,6 +247,7 @@ extension MenuBarExtraUtils {
 
 // MARK: - NSStatusItem Introspection
 
+@MainActor
 extension NSStatusItem {
     var menuBarExtraIndex: Int {
         MenuBarExtraUtils.statusItems.firstIndex(of: self) ?? 0
@@ -314,6 +318,7 @@ extension NSStatusItem {
 
 // MARK: - NSWindow Introspection
 
+@MainActor
 extension NSWindow {
     fileprivate var menuBarExtraID: String? {
         // Note: this is not ideal, but it's currently the ONLY way to achieve this
@@ -324,6 +329,7 @@ extension NSWindow {
     }
 }
 
+@MainActor
 extension Mirror {
     fileprivate func menuBarExtraID() -> String? {
         // Note: this is not ideal, but it's currently the ONLY way to achieve this
@@ -379,6 +385,7 @@ extension Mirror {
 
 // MARK: - Misc.
 
+@MainActor
 extension MenuBarExtraUtils {
     static func hash(anyView: any View) -> String {
         // can't hash `any View`

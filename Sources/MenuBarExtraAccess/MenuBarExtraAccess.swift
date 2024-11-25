@@ -19,7 +19,7 @@ extension Scene {
     public func menuBarExtraAccess(
         index: Int = 0,
         isPresented: Binding<Bool>,
-        statusItem: ((_ statusItem: NSStatusItem) -> Void)? = nil
+        statusItem: (@MainActor @Sendable (_ statusItem: NSStatusItem) -> Void)? = nil
     ) -> some Scene {
         // FYI: SwiftUI will reinitialize the MenuBarExtra (and this view modifier)
         // if its title/label content changes, which means the stored ID will always be up-to-date
@@ -39,13 +39,13 @@ extension Scene {
 @available(watchOS, unavailable)
 struct MenuBarExtraAccess<Content: Scene>: Scene {
     let index: Int
-    let statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?
+    let statusItemIntrospection: (@MainActor @Sendable (_ statusItem: NSStatusItem) -> Void)?
     let menuBarExtra: Content
     @Binding var isMenuPresented: Bool
     
     init(
         index: Int,
-        statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?,
+        statusItemIntrospection: (@MainActor @Sendable (_ statusItem: NSStatusItem) -> Void)?,
         menuBarExtra: Content,
         isMenuPresented: Binding<Bool>
     ) {
@@ -172,6 +172,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     
     private var observerContainer = ObserverContainer()
     
+    @MainActor
     private class ObserverContainer {
         private var statusItemIntrospectionSetup: Bool = false
         private var observer: NSStatusItem.ButtonStateObserver?
@@ -182,29 +183,29 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         init() { }
         
         func setupStatusItemIntrospection(
-            _ block: @escaping () -> Void
+            _ block: @MainActor @escaping @Sendable () -> Void
         ) {
             guard !statusItemIntrospectionSetup else { return }
             // run async so that it can execute after SwiftUI sets up the NSStatusItem
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 block()
             }
         }
         
         func setupStatusItemButtonStateObserver(
-            _ block: @escaping () -> NSStatusItem.ButtonStateObserver?
+            _ block: @MainActor @escaping @Sendable () -> NSStatusItem.ButtonStateObserver?
         ) {
             // run async so that it can execute after SwiftUI sets up the NSStatusItem
-            DispatchQueue.main.async { [self] in
+            Task { @MainActor [self] in
                 observer = block()
             }
         }
         
         func setupGlobalMouseDownMonitor(
-            _ block: @escaping () -> Any?
+            _ block: @MainActor @escaping @Sendable () -> Any?
         ) {
             // run async so that it can execute after SwiftUI sets up the NSStatusItem
-            DispatchQueue.main.async { [self] in
+            Task { @MainActor [self] in
                 // tear down old monitor, if one exists
                 if let eventsMonitor = eventsMonitor {
                     NSEvent.removeMonitor(eventsMonitor)
@@ -216,11 +217,11 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         
         func setupWindowObservers(
             index: Int,
-            didBecomeKey didBecomeKeyBlock: @escaping (_ window: NSWindow) -> Void,
-            didResignKey didResignKeyBlock: @escaping (_ window: NSWindow) -> Void
+            didBecomeKey didBecomeKeyBlock: @MainActor @escaping @Sendable (_ window: NSWindow) -> Void,
+            didResignKey didResignKeyBlock: @MainActor @escaping @Sendable (_ window: NSWindow) -> Void
         ) {
             // run async so that it can execute after SwiftUI sets up the NSStatusItem
-            DispatchQueue.main.async { [self] in
+            Task { @MainActor [self] in
                 windowDidBecomeKeyObserver = MenuBarExtraUtils.newWindowObserver(
                     index: index,
                     for: NSWindow.didBecomeKeyNotification

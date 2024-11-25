@@ -9,6 +9,7 @@
 import AppKit
 import SwiftUI
 
+@MainActor
 extension NSStatusItem {
     /// Toggles the menu/window state by mimicking a menu item button press.
     @_disfavoredOverload
@@ -72,14 +73,16 @@ extension NSStatusItem {
 
 // MARK: - KVO Observer
 
+@MainActor
 extension NSStatusItem {
+    @MainActor
     internal class ButtonStateObserver: NSObject {
         private weak var objectToObserve: NSStatusBarButton?
         private var observation: NSKeyValueObservation?
         
         init(
             object: NSStatusBarButton,
-            _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
+            _ handler: @MainActor @escaping @Sendable (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
         ) {
             objectToObserve = object
             super.init()
@@ -88,7 +91,7 @@ extension NSStatusItem {
                 \.cell!.state,
                  options: [.initial, .new]
             ) { ob, change in
-                handler(change)
+                Task { @MainActor in handler(change) }
             }
         }
         
@@ -98,7 +101,7 @@ extension NSStatusItem {
     }
     
     internal func stateObserverMenuBased(
-        _ handler: @escaping (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
+        _ handler: @MainActor @escaping @Sendable (_ change: NSKeyValueObservedChange<NSControl.StateValue>) -> Void
     ) -> ButtonStateObserver? {
         guard let button else { return nil }
         let newStatusItemButtonStateObserver = ButtonStateObserver(object: button, handler)
@@ -108,6 +111,7 @@ extension NSStatusItem {
 
 // MARK: - KVO Publisher
 
+@MainActor
 extension NSStatusItem {
     typealias ButtonStatePublisher = KeyValueObservingPublisher<NSStatusBarButton, NSControl.StateValue>
     
