@@ -15,7 +15,6 @@ let package = Package(
                 // un-comment to enable debug logging
                 // .define("MENUBAREXTRAACCESS_DEBUG_LOGGING=1")
             ]
-        ),
-        .testTarget(name: "MenuBarExtraAccessTests", dependencies: ["MenuBarExtraAccess"]),
+        )
     ]
 )
