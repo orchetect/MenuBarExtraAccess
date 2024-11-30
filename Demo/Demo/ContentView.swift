@@ -13,6 +13,8 @@ struct ContentView: View {
     @Binding var isMenu3Presented: Bool
     @Binding var isMenu4Presented: Bool
     
+    @State private var dock = Dock()
+    
     var body: some View {
         VStack(spacing: 40) {
             HStack(spacing: 20) {
@@ -22,6 +24,8 @@ struct ContentView: View {
                 MenuStateView(num: 1, isMenuPresented: $isMenu1Presented)
                 MenuStateView(num: 0, isMenuPresented: $isMenu0Presented)
             }
+            
+            Toggle("Dock Icon Visible", isOn: $dock.isVisible)
             
             Text(
                 """
@@ -33,6 +37,7 @@ struct ContentView: View {
         }
         .padding()
         .frame(minWidth: 400, minHeight: 350)
+        .toggleStyle(.switch)
     }
     
     struct MenuStateView: View {
