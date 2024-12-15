@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@MainActor // required for Xcode 15 builds
 extension View {
     /// Provides introspection on the underlying window presented by `MenuBarExtra`.
     /// Add this view modifier to the top level of the View that occupies the `MenuBarExtra` content.

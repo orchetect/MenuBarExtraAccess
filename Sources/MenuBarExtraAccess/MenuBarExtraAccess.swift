@@ -13,6 +13,7 @@ import Combine
 @available(iOS, unavailable)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
+@MainActor // required for Xcode 15 builds
 extension Scene {
     /// Adds a presentation state binding to `MenuBarExtra`.
     /// If more than one MenuBarExtra are used in the app, provide the sequential index number of the `MenuBarExtra`.
@@ -37,6 +38,7 @@ extension Scene {
 @available(iOS, unavailable)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
+@MainActor // required for Xcode 15 builds
 struct MenuBarExtraAccess<Content: Scene>: Scene {
     let index: Int
     let statusItemIntrospection: (@MainActor @Sendable (_ statusItem: NSStatusItem) -> Void)?
