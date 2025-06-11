@@ -148,6 +148,13 @@ Coded by a bunch of 🐹 hamsters in a trenchcoat that calls itself [@orchetect]
 
 Licensed under the MIT license. See [LICENSE](https://github.com/orchetect/MenuBarExtraAccess/blob/master/LICENSE) for details.
 
+## Community & Support
+
+Please do not email maintainers for technical support. Several options are available for issues and questions:
+
+- Questions and feature ideas can be posted to [Discussions](https://github.com/orchetect/MenuBarExtraAccess/discussions).
+- If an issue is a verifiable bug with reproducible steps it may be posted in [Issues](https://github.com/orchetect/MenuBarExtraAccess/issues).
+
 ## Sponsoring
 
 If you enjoy using MenuBarExtraAccess and want to contribute to open-source financially, GitHub sponsorship is much appreciated. Feedback and code contributions are also welcome.
