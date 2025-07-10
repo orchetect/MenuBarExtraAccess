@@ -49,6 +49,8 @@ enum MenuBarExtraUtils {
 
 @MainActor
 extension MenuBarExtraUtils {
+    private static let statusItemCls = NSClassFromString("NSStatusItem")
+    
     /// Returns the underlying status item(s) created by `MenuBarExtra` instances.
     ///
     /// Each `MenuBarExtra` creates one status item.
@@ -72,7 +74,8 @@ extension MenuBarExtraUtils {
                 // both respond to the action selector being sent to them.
                 // We only need to interact with the main non-replica status item.
                 guard let statusItem = window.fetchStatusItem(),
-                      statusItem.className == "NSStatusItem"
+                      let statusItemCls,
+                      statusItem.isKind(of: statusItemCls) && statusItem.className != "NSStatusItemReplicant"
                 else { return nil }
                 return statusItem
             }
