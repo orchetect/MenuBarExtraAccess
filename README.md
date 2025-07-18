@@ -2,6 +2,10 @@
 
 [![Platforms - macOS 13.0](https://img.shields.io/badge/platforms-macOS%2013.0-blue.svg?style=flat)](https://developer.apple.com/swift) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2FMenuBarExtraAccess%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/MenuBarExtraAccess) [![Xcode 14](https://img.shields.io/badge/Xcode-14-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/MenuBarExtraAccess/blob/main/LICENSE)
 
+> [!WARNING]
+>
+> This package is not yet compatible with macOS 26 beta. See [this issue](https://github.com/orchetect/MenuBarExtraAccess/issues/20) for details and development progress.
+
 #### **Gives you *Extra* access to SwiftUI `MenuBarExtra`.**
 
 - Programmatically hide, show, or toggle the menu (by way of a Bool binding)
@@ -12,7 +16,7 @@
 
 #### Why?
 
-There is no 1st-party MenuBarExtra API to get or set the menu presentation state, access the status item, or access the popup's NSWindow. (Still as of Xcode 16.1)
+There is no 1st-party MenuBarExtra API to get or set the menu presentation state, access the status item, or access the popup's NSWindow. (Still as of Xcode 26 beta 3)
 
 #### Library Features
 
@@ -42,7 +46,7 @@ An example of showing the menu extra menu by clicking a button in a window:
 
 ```swift 
 @main struct MyApp: App {
-    @State var isMenuPresented: Bool = false
+    @State private var isMenuPresented: Bool = false
     
     var body: some Scene {
         WindowGroup {
@@ -67,7 +71,7 @@ An example of a button in the popup window dismissing the popup and performing a
 
 ```swift 
 @main struct MyApp: App {
-    @State var isMenuPresented: Bool = false
+    @State private var isMenuPresented: Bool = false
     
     var body: some Scene {
         MenuBarExtra("MyApp Menu", systemImage: "folder") {
