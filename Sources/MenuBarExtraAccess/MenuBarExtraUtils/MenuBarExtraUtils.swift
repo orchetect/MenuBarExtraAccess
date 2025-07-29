@@ -71,8 +71,12 @@ extension MenuBarExtraUtils {
                 // spaces/screens that happens to be an NSStatusItem subclass.
                 // both respond to the action selector being sent to them.
                 // We only need to interact with the main non-replica status item.
+                var statusItemClassName = "NSStatusItem"
+                if #available(macOS 26.0, *) {
+                    statusItemClassName = "NSSceneStatusItem"
+                }
                 guard let statusItem = window.fetchStatusItem(),
-                      statusItem.className == "NSStatusItem"
+                      statusItem.className == statusItemClassName
                 else { return nil }
                 return statusItem
             }
