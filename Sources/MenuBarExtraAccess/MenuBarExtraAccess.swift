@@ -20,7 +20,7 @@ extension Scene {
     public func menuBarExtraAccess(
         index: Int = 0,
         isPresented: Binding<Bool>,
-        statusItem: (@MainActor @Sendable (_ statusItem: NSStatusItem) -> Void)? = nil
+        statusItem: ((_ statusItem: NSStatusItem) -> Void)? = nil
     ) -> some Scene {
         // FYI: SwiftUI will reinitialize the MenuBarExtra (and this view modifier)
         // if its title/label content changes, which means the stored ID will always be up-to-date
@@ -41,13 +41,13 @@ extension Scene {
 @MainActor // required for Xcode 15 builds
 struct MenuBarExtraAccess<Content: Scene>: Scene {
     let index: Int
-    let statusItemIntrospection: (@MainActor @Sendable (_ statusItem: NSStatusItem) -> Void)?
+    let statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?
     let menuBarExtra: Content
     @Binding var isMenuPresented: Bool
     
     init(
         index: Int,
-        statusItemIntrospection: (@MainActor @Sendable (_ statusItem: NSStatusItem) -> Void)?,
+        statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?,
         menuBarExtra: Content,
         isMenuPresented: Binding<Bool>
     ) {
