@@ -2,26 +2,24 @@
 
 [![Platforms - macOS 13.0](https://img.shields.io/badge/platforms-macOS%2013.0-blue.svg?style=flat)](https://developer.apple.com/swift) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2FMenuBarExtraAccess%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/MenuBarExtraAccess) [![Xcode 14](https://img.shields.io/badge/Xcode-14-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/MenuBarExtraAccess/blob/main/LICENSE)
 
-> [!WARNING]
->
-> This package is not yet compatible with macOS 26 beta. See [this issue](https://github.com/orchetect/MenuBarExtraAccess/issues/20) for details and development progress.
-
 #### **Gives you *Extra* access to SwiftUI `MenuBarExtra`.**
 
-- Programmatically hide, show, or toggle the menu (by way of a Bool binding)
+- Programmatically hide, show, or toggle the menu (by way of a `Bool` binding)
+- Programmatically enable or disable the menubar extra (by way of a `Bool` binding)
 - Access to the underlying `NSStatusItem`
 - Access to the underlying `NSWindow` (when using the `.window` style)
 - Works with one or [multiple](#Multiple-MenuBarExtra) `MenuBarExtra`
 - Works with both [`menu`](#Standard-Menu-Style) and [`window`](#Window-Style) based styles (see [Known Issues](#Known-Issues))
 
-#### Why?
+## Why?
 
-There is no 1st-party MenuBarExtra API to get or set the menu presentation state, access the status item, or access the popup's NSWindow. (Still as of Xcode 26 beta 3)
+There is no 1st-party `MenuBarExtra` API to get or set the menu presentation state, disable the menubar extra, access the `NSStatusItem`, or access the popup's `NSWindow`. (Still as of macOS 26 beta 4)
 
-#### Library Features
+## Library Features
 
-- A new `.menuBarExtraAccess(isPresented:) { statusItem in }` scene modifier with
-  - a binding to hide/show/toggle the menu, and
+- A new `.menuBarExtraAccess(isPresented:, isEnabled:) { statusItem in }` scene modifier with
+  - a binding to hide/show/toggle the menu
+  - a binding to enabled/disable the menubar extra
   - direct access to the `NSStatusItem` if needed
 - A new `.introspectMenuBarExtraWindow { window in }` view modifier passing in the `NSWindow` reference
 - Window-based menu extra status items now remain highlighted while the window is open so it feels more like a native menu
@@ -33,99 +31,7 @@ The library is available as a Swift Package Manager (SPM) package.
 
 Use the URL `https://github.com/orchetect/MenuBarExtraAccess` when adding the library to a project or Swift package.
 
-Then import the library:
-
-```swift
-import SwiftUI
-import MenuBarExtraAccess
-```
-
-### Standard Menu Style
-
-An example of showing the menu extra menu by clicking a button in a window:
-
-```swift 
-@main struct MyApp: App {
-    @State private var isMenuPresented: Bool = false
-    
-    var body: some Scene {
-        WindowGroup {
-            Button("Show Menu") { isMenuPresented = true }
-        }
-        
-        MenuBarExtra("MyApp Menu", systemImage: "folder") {
-            Button("Menu Item 1") { print("Menu Item 1") }
-            Button("Menu Item 2") { print("Menu Item 2") }
-        }
-        .menuBarExtraStyle(.menu)
-        .menuBarExtraAccess(isPresented: $isMenuPresented) { statusItem in // <-- the magic ✨
-             // access status item or store it in a @State var
-        }
-    }
-}
-```
-
-### Window Style
-
-An example of a button in the popup window dismissing the popup and performing an action:
-
-```swift 
-@main struct MyApp: App {
-    @State private var isMenuPresented: Bool = false
-    
-    var body: some Scene {
-        MenuBarExtra("MyApp Menu", systemImage: "folder") {
-            MyMenu(isMenuPresented: $isMenuPresented)
-            	.introspectMenuBarExtraWindow { window in // <-- the magic ✨
-                    window.animationBehavior = .alertPanel
-                }
-        }
-        .menuBarExtraStyle(.window)
-        .menuBarExtraAccess(isPresented: $isMenuPresented) { statusItem in // <-- the magic ✨
-             // access status item or store it in a @State var
-        }
-    }
-}
-
-struct MyMenu: View {
-    @Binding var isMenuPresented: Bool
-
-    var body: some View {
-        Button("Perform Action") { 
-            isMenuPresented = false 
-            performSomeAction()
-        }
-    }
-}
-```
-
-### Multiple MenuBarExtra
-
-MenuBarExtraAccess is fully compatible with one or multiple MenuBarExtra in an app.
-
-Just add an index number parameter to `.menuBarExtraAccess()` and `.introspectMenuBarExtraWindow()` that reflects the order of `MenuBarExtra` declarations.
-
-```swift
-var body: some Scene {
-    MenuBarExtra("MyApp Menu A", systemImage: "folder") {
-        MyMenu(isMenuPresented: $isMenuPresented)
-            .introspectMenuBarExtraWindow(index: 0) { window in // <-- add index 0
-                // ...
-            }
-    }
-    .menuBarExtraStyle(.window)
-    .menuBarExtraAccess(index: 0, isPresented: $isMenuPresented) // <-- add index 0
-    
-    MenuBarExtra("MyApp Menu B", systemImage: "folder") {
-        MyMenu(isMenuPresented: $isMenuPresented)
-            .introspectMenuBarExtraWindow(index: 1) { window in // <-- add index 1
-                // ...
-            }
-    }
-    .menuBarExtraStyle(.window)
-    .menuBarExtraAccess(index: 1, isPresented: $isMenuPresented) // <-- add index 1
-}
-```
+Check out the [Examples](Examples) folder for a demonstration of the package's usage.
 
 ## Future
 
