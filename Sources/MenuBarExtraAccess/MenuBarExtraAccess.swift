@@ -20,6 +20,7 @@ extension Scene {
     public func menuBarExtraAccess(
         index: Int = 0,
         isPresented: Binding<Bool>,
+        isEnabled: Binding<Bool> = .constant(true),
         statusItem: ((_ statusItem: NSStatusItem) -> Void)? = nil
     ) -> some Scene {
         // FYI: SwiftUI will reinitialize the MenuBarExtra (and this view modifier)
@@ -29,7 +30,8 @@ extension Scene {
             index: index,
             statusItemIntrospection: statusItem,
             menuBarExtra: self,
-            isMenuPresented: isPresented
+            isMenuPresented: isPresented,
+            isStatusItemEnabled: isEnabled
         )
     }
 }
@@ -44,17 +46,20 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     let statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?
     let menuBarExtra: Content
     @Binding var isMenuPresented: Bool
+    @Binding var isStatusItemEnabled: Bool
     
     init(
         index: Int,
         statusItemIntrospection: ((_ statusItem: NSStatusItem) -> Void)?,
         menuBarExtra: Content,
-        isMenuPresented: Binding<Bool>
+        isMenuPresented: Binding<Bool>,
+        isStatusItemEnabled: Binding<Bool>
     ) {
         self.index = index
         self.statusItemIntrospection = statusItemIntrospection
         self.menuBarExtra = menuBarExtra
         self._isMenuPresented = isMenuPresented
+        self._isStatusItemEnabled = isStatusItemEnabled
     }
     
     var body: some Scene {
@@ -65,6 +70,9 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
             .onChange(of: isMenuPresented) { newValue in
                 setPresented(newValue)
             }
+            .onChange(of: isStatusItemEnabled) { newValue in
+                setStatusItemEnabled(newValue)
+            }
     }
     
     private func togglePresented() {
@@ -72,7 +80,22 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     }
     
     private func setPresented(_ state: Bool) {
+        var state = state
+        if state, !isStatusItemEnabled {
+            // prevent presenting menu/window if item is disabled
+            state = false
+        }
         MenuBarExtraUtils.setPresented(for: .index(index), state: state)
+    }
+    
+    private func setStatusItemEnabled(_ state: Bool) {
+        if !state, isMenuPresented {
+            // close menu if it's open
+            isMenuPresented = false
+            MenuBarExtraUtils.setPresented(for: .index(index), state: false)
+        }
+        
+        MenuBarExtraUtils.setEnabled(for: .index(index), state: state)
     }
     
     // MARK: Observer
@@ -86,6 +109,9 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         observerContainer.setupStatusItemIntrospection {
             guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else { return }
             statusItemIntrospection?(statusItem)
+            
+            // initial setup
+            setStatusItemEnabled(isStatusItemEnabled)
         }
         
         // note that we can't use the button state value itself since MenuBarExtra seems to treat it

@@ -42,6 +42,10 @@ extension NSStatusItem {
             updateHighlight()
             return
         }
+        
+        // don't allow presenting the menu if the status item is disabled
+        if state { guard button?.isEnabled == true else { return } }
+        
         togglePresented()
     }
     
@@ -68,6 +72,10 @@ extension NSStatusItem {
         case false:
             button?.state = .off
         }
+    }
+    
+    internal func setEnabled(state: Bool) {
+        button?.isEnabled = state
     }
 }
 

@@ -21,7 +21,8 @@ enum MenuBarExtraUtils {
         print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil")")
         #endif
         
-        statusItem(for: ident)?.togglePresented()
+        guard let item = statusItem(for: ident) else { return }
+        item.togglePresented()
     }
     
     /// Set MenuBarExtra menu/window presentation state.
@@ -42,6 +43,15 @@ enum MenuBarExtraUtils {
         
         guard let item = statusItem(for: ident) else { return }
         item.setKnownPresented(state: state)
+    }
+    
+    static func setEnabled(for ident: StatusItemIdentity? = nil, state: Bool) {
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
+        print("MenuBarExtraUtils.\(#function) called for status item \(ident?.description ?? "nil") with state \(state)")
+        #endif
+        
+        guard let item = statusItem(for: ident) else { return }
+        item.setEnabled(state: state)
     }
 }
 
