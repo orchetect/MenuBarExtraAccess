@@ -84,8 +84,8 @@ jobs:
     # - name: Unit Tests
     #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify && exit ${PIPESTATUS[0]}
 
-  demo-projects:
-    name: Demo Projects
+  examples:
+    name: Examples
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@main
