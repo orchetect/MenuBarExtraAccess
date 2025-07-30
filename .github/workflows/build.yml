@@ -87,6 +87,7 @@ jobs:
   demo-projects:
     name: Demo Projects
     runs-on: macos-latest
+    steps:
     - uses: actions/checkout@main
     - uses: maxim-lobanov/setup-xcode@v1
       with:
