@@ -7,9 +7,11 @@
 import Foundation
 import SwiftUI
 
-@Observable @MainActor final class Dock {
+@MainActor final class Dock: ObservableObject {
     var isVisible: Bool {
         get { NSApplication.shared.activationPolicy() == .regular }
         set { NSApplication.shared.setActivationPolicy(newValue ? .regular : .accessory) }
     }
+    
+    init() { }
 }
