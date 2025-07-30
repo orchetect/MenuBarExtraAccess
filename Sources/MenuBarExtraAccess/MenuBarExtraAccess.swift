@@ -121,7 +121,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         observerContainer.setupStatusItemButtonStateObserver {
             MenuBarExtraUtils.newStatusItemButtonStateObserver(index: index) { change in
                 #if MENUBAREXTRAACCESS_DEBUG_LOGGING
-                print("Status item button state observer: called with change: \(change.newValue?.description ?? "nil")")
+                print("Status item button state observer: called with change: \(change.newValue?.name ?? "nil")")
                 #endif
                 
                 // only continue if the MenuBarExtra is menu-based.
