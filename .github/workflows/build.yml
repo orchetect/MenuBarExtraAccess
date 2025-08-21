@@ -39,9 +39,9 @@ jobs:
       with:
         xcode-version: latest-stable
     - name: Build
-      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     # - name: Unit Tests
-    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify && exit ${PIPESTATUS[0]}
+    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     
   macOS-14:
     name: macOS 14
@@ -52,9 +52,9 @@ jobs:
       with:
         xcode-version: latest-stable
     - name: Build
-      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     # - name: Unit Tests
-    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify && exit ${PIPESTATUS[0]}
+    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     
   macOS:
     name: macOS
@@ -65,9 +65,9 @@ jobs:
       with:
         xcode-version: latest-stable
     - name: Build
-      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     # - name: Unit Tests
-    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify && exit ${PIPESTATUS[0]}
+    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
   
   macOS-swift6:
     name: macOS (Swift 6)
@@ -80,9 +80,9 @@ jobs:
     - name: Set Package to Swift 6.0
       run: swift package tools-version --set "6.0"
     - name: Build
-      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     # - name: Unit Tests
-    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify && exit ${PIPESTATUS[0]}
+    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
 
   examples:
     name: Examples
@@ -94,16 +94,16 @@ jobs:
         xcode-version: latest-stable
     
     - name: Menu-Based MenuBarExtra Demo - Resolve Package Dependencies # needed because sometimes xcodebuild fails otherwise
-      run: xcodebuild -project "Examples/Menu-Based MenuBarExtra Demo/Demo.xcodeproj" -resolvePackageDependencies | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild -project "Examples/Menu-Based MenuBarExtra Demo/Demo.xcodeproj" -resolvePackageDependencies | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     - name: Menu-Based MenuBarExtra Demo - Build
-      run: xcodebuild build -project "Examples/Menu-Based MenuBarExtra Demo/Demo.xcodeproj" -scheme "Demo" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -project "Examples/Menu-Based MenuBarExtra Demo/Demo.xcodeproj" -scheme "Demo" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     
     - name: Multiple MenuBarExtra Demo - Resolve Package Dependencies # needed because sometimes xcodebuild fails otherwise
-      run: xcodebuild -project "Examples/Multiple MenuBarExtra Demo/Demo.xcodeproj" -resolvePackageDependencies | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild -project "Examples/Multiple MenuBarExtra Demo/Demo.xcodeproj" -resolvePackageDependencies | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     - name: Multiple MenuBarExtra Demo - Build
-      run: xcodebuild build -project "Examples/Multiple MenuBarExtra Demo/Demo.xcodeproj" -scheme "Demo" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -project "Examples/Multiple MenuBarExtra Demo/Demo.xcodeproj" -scheme "Demo" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     
     - name: Window-Based MenuBarExtra Demo - Resolve Package Dependencies # needed because sometimes xcodebuild fails otherwise
-      run: xcodebuild -project "Examples/Window-Based MenuBarExtra Demo/Demo.xcodeproj" -resolvePackageDependencies | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild -project "Examples/Window-Based MenuBarExtra Demo/Demo.xcodeproj" -resolvePackageDependencies | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     - name: Window-Based MenuBarExtra Demo - Build
-      run: xcodebuild build -project "Examples/Window-Based MenuBarExtra Demo/Demo.xcodeproj" -scheme "Demo" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -project "Examples/Window-Based MenuBarExtra Demo/Demo.xcodeproj" -scheme "Demo" -destination "generic/platform=macOS,name=Any Mac" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
