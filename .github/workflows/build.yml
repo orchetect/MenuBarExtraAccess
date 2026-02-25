@@ -27,7 +27,7 @@ on:
     - cron: '35 13 * * *'   # once a day @ 2:35am UTC (7:35am PST)
 
 env:
-  SCHEME: "MenuBarExtraAccess-CI"
+  SCHEME: "MenuBarExtraAccess"
 
 jobs:
   macOS-14:
@@ -72,22 +72,6 @@ jobs:
     # - name: Unit Tests
     #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
   
-  macOS-swift6:
-    name: macOS (Latest Swift 6)
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Set Package to Swift 6.0
-      run: swift package tools-version --set "6.0"
-    - name: Build
-      run: xcodebuild build -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    # - name: Unit Tests
-    #   run: xcodebuild test -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-
   examples:
     name: Examples
     runs-on: macos-latest
