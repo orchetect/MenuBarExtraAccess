@@ -32,14 +32,39 @@ struct ContentView: View {
             
             Divider()
             
-            VStack(spacing: 10) {
-                Text("Try opening and closing the menu in the menu bar. The Presented toggle will update in response because the state binding is being updated.")
-                Text("Clicking on the Presented toggle will also open or close the menu by setting the binding value.")
-            }
+            InfoView()
         }
         .padding()
         .toggleStyle(.switch)
         .multilineTextAlignment(.center)
-        .frame(minWidth: 450, maxWidth: 500, minHeight: 400, maxHeight: 600)
+        .frame(minWidth: 450, maxWidth: 500, minHeight: 420, maxHeight: 600)
+    }
+}
+
+extension ContentView {
+    struct InfoView: View {
+        var body: some View {
+            Form {
+                HStack(alignment: .top) {
+                    Image(systemName: "lightbulb.fill")
+                        .font(.system(size: 16))
+                        .frame(width: 20)
+                    Text(
+                        """
+                        Try opening and closing the menu in the menu bar. \
+                        The Presented toggle will update in response because the state binding is being updated.
+                        """
+                    )
+                }
+                
+                HStack(alignment: .top) {
+                    Image(systemName: "lightbulb.fill")
+                        .font(.system(size: 16))
+                        .frame(width: 20)
+                    Text("Clicking on the Presented toggle will also open or close the menu by setting the binding value.")
+                }
+            }
+            .formStyle(.grouped)
+        }
     }
 }

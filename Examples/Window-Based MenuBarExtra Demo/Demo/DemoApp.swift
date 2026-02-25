@@ -22,14 +22,12 @@ struct DemoApp: App {
         }
         .windowResizability(.contentSize)
         
-        MenuBarExtra {
+        MenuBarExtra("Demo", systemImage: "bubble.left.fill") {
             MenuBarView(isMenuPresented: $isMenuExtraPresented)
                 .introspectMenuBarExtraWindow { window in
                     // window properties can be modified here if needed.
                     // note that this is entirely optional and provided for convenience.
                 }
-        } label: {
-            Image(systemName: "bubble.left.fill")
         }
         .menuBarExtraAccess(isPresented: $isMenuExtraPresented, isEnabled: $isMenuExtraEnabled) { statusItem in
             // status item can be modified here if needed,

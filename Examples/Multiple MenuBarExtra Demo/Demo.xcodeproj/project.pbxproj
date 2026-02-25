@@ -10,7 +10,7 @@
 		E212FC1B295167E4007E27BB /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E212FC1A295167E4007E27BB /* DemoApp.swift */; };
 		E212FC1F295167E5007E27BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E212FC1E295167E5007E27BB /* Assets.xcassets */; };
 		E214EC0D2CAFA71200B91076 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E214EC0C2CAFA71200B91076 /* ContentView.swift */; };
-		E2B6A8A42CFBBFDA00A4B22E /* Dock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B6A8A32CFBBFD600A4B22E /* Dock.swift */; };
+		E2A8E4952F4ECB4000EB1EB6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A8E4942F4ECB3D00EB1EB6 /* ViewModel.swift */; };
 		E2C1790B2CF45CCD00BE21A1 /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E2C1790A2CF45CCD00BE21A1 /* MenuBarExtraAccess */; };
 		E2ED15CD2CAFA6B100972C1A /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ED15CC2CAFA6B100972C1A /* MenuBarView.swift */; };
 		E2FC96F02E39BE0E008701F5 /* MenuBarExtraAccess in Frameworks */ = {isa = PBXBuildFile; productRef = E2FC96EF2E39BE0E008701F5 /* MenuBarExtraAccess */; };
@@ -22,7 +22,7 @@
 		E212FC1E295167E5007E27BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E212FC23295167E5007E27BB /* MenuBarExtraAccessDemoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MenuBarExtraAccessDemoApp.entitlements; sourceTree = "<group>"; };
 		E214EC0C2CAFA71200B91076 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		E2B6A8A32CFBBFD600A4B22E /* Dock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dock.swift; sourceTree = "<group>"; };
+		E2A8E4942F4ECB3D00EB1EB6 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		E2ED15CC2CAFA6B100972C1A /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,7 +61,7 @@
 				E212FC1A295167E4007E27BB /* DemoApp.swift */,
 				E2ED15CC2CAFA6B100972C1A /* MenuBarView.swift */,
 				E214EC0C2CAFA71200B91076 /* ContentView.swift */,
-				E2B6A8A32CFBBFD600A4B22E /* Dock.swift */,
+				E2A8E4942F4ECB3D00EB1EB6 /* ViewModel.swift */,
 				E212FC1E295167E5007E27BB /* Assets.xcassets */,
 				E212FC23295167E5007E27BB /* MenuBarExtraAccessDemoApp.entitlements */,
 			);
@@ -144,9 +144,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2A8E4952F4ECB4000EB1EB6 /* ViewModel.swift in Sources */,
 				E212FC1B295167E4007E27BB /* DemoApp.swift in Sources */,
 				E2ED15CD2CAFA6B100972C1A /* MenuBarView.swift in Sources */,
-				E2B6A8A42CFBBFDA00A4B22E /* Dock.swift in Sources */,
 				E214EC0D2CAFA71200B91076 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -206,7 +206,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -263,7 +263,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
