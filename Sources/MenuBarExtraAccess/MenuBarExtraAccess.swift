@@ -106,12 +106,33 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     /// This returns a bogus value, but because we call it in an `onChange {}` block, SwiftUI
     /// is forced to evaluate the method and run our code at the appropriate time.
     private func observerSetup() -> Int {
+        #if MENUBAREXTRAACCESS_DEBUG_LOGGING
+        print("menuBarExtraAccess observerSetup() called")
+        #endif
+        
         observerContainer.setupStatusItemIntrospection {
-            guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else { return }
-            statusItemIntrospection?(statusItem)
+            // attempt to get status item for a short period of time before giving up
+            let timeout: TimeInterval = 2.0
+            let pollingInterval: TimeInterval = 0.2
+            let inTime = Date()
+            while !Task.isCancelled,
+                  Date().timeIntervalSince(inTime) < timeout
+            {
+                guard let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)) else {
+                    try? await Task.sleep(for: .seconds(pollingInterval))
+                    continue
+                }
+                
+                statusItemIntrospection?(statusItem)
+                
+                // initial setup
+                setStatusItemEnabled(isStatusItemEnabled)
+                
+                return true
+            }
             
-            // initial setup
-            setStatusItemEnabled(isStatusItemEnabled)
+            // timed out
+            return false
         }
         
         // note that we can't use the button state value itself since MenuBarExtra seems to treat it
@@ -202,7 +223,7 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
     
     @MainActor
     private class ObserverContainer {
-        private var statusItemIntrospectionSetup: Bool = false
+        private var statusItemIntrospectionSetupPhase: SetupPhase = .notStarted
         private var observer: NSStatusItem.ButtonStateObserver?
         private var eventsMonitor: Any?
         private var windowDidBecomeKeyObserver: AnyCancellable?
@@ -210,13 +231,29 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
         
         init() { }
         
+        enum SetupPhase: Equatable, Hashable, Sendable {
+            case notStarted
+            case started
+            case failed
+            case succeeded
+        }
+        
         func setupStatusItemIntrospection(
-            _ block: @MainActor @escaping @Sendable () -> Void
+            _ block: @MainActor @escaping @Sendable () async -> Bool
         ) {
-            guard !statusItemIntrospectionSetup else { return }
+            guard statusItemIntrospectionSetupPhase == .notStarted else { return }
+            statusItemIntrospectionSetupPhase = .started
+            
             // run async so that it can execute after SwiftUI sets up the NSStatusItem
             Task { @MainActor in
-                block()
+                let result = await block()
+                statusItemIntrospectionSetupPhase = result ? .succeeded : .failed
+                
+                #if MENUBAREXTRAACCESS_DEBUG_LOGGING
+                if statusItemIntrospectionSetupPhase == .failed {
+                    print("Timed out while searching for MenuBarExtra status item. No status item to pass to introspection block.")
+                }
+                #endif
             }
         }
         
