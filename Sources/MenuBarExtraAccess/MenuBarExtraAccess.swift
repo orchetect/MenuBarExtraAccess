@@ -14,9 +14,12 @@ import Combine
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 @MainActor // required for Xcode 15 builds
-extension Scene {
+extension MenuBarExtra {
     /// Adds a presentation state binding to `MenuBarExtra`.
     /// If more than one MenuBarExtra are used in the app, provide the sequential index number of the `MenuBarExtra`.
+    ///
+    /// - Important: This scene modifier *must* be applied as the first scene modifier after the `MenuBarExtra` declaration.
+    ///   As such, it is provided as an extension to `MenuBarExtra` and not the more generic `Scene` protocol.
     public func menuBarExtraAccess(
         index: Int = 0,
         isPresented: Binding<Bool>,
