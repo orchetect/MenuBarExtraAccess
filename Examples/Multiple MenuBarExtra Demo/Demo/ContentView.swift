@@ -1,17 +1,17 @@
 //
 //  ContentView.swift
 //  MenuBarExtraAccess • https://github.com/orchetect/MenuBarExtraAccess
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import SwiftUI
 
 struct ContentView: View {
     @Environment(ViewModel.self) private var viewModel
-    
+
     var body: some View {
         @Bindable var viewModel = viewModel
-        
+
         VStack(spacing: 40) {
             HStack(spacing: 20) {
                 VStack(alignment: .trailing, spacing: 20) {
@@ -25,9 +25,9 @@ struct ContentView: View {
                 MenuStateView(num: 1, menuState: $viewModel.menu1)
                 MenuStateView(num: 0, menuState: $viewModel.menu0)
             }
-            
+
             Toggle("Dock Icon Visible", isOn: $viewModel.isDockVisible)
-            
+
             InfoView()
         }
         .padding()
@@ -41,17 +41,17 @@ extension ContentView {
     struct MenuStateView: View {
         let num: Int
         @Binding var menuState: ViewModel.MenuState
-        
+
         var body: some View {
             VStack(spacing: 20) {
                 Image(systemName: "\(num).circle.fill")
                     .resizable()
                     .frame(width: 20, height: 20)
-                
+
                 Toggle("", isOn: $menuState.isPresented)
                     .toggleStyle(.switch)
                     .labelsHidden()
-                
+
                 Toggle("", isOn: $menuState.isEnabled)
                     .toggleStyle(.switch)
                     .labelsHidden()
@@ -76,14 +76,16 @@ extension ContentView {
                         """
                     )
                 }
-                
+
                 HStack(alignment: .top) {
                     Image(systemName: "lightbulb.fill")
                         .font(.system(size: 16))
                         .frame(width: 20)
-                    Text("Manually reordering the menu extras by `⌘`+dragging them still preserves each menu's index and associated bindings.")
+                    Text(
+                        "Manually reordering the menu extras by `⌘`+dragging them still preserves each menu's index and associated bindings."
+                    )
                 }
-                
+
                 HStack(alignment: .top) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 16))

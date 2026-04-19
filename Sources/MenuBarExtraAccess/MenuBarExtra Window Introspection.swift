@@ -1,7 +1,7 @@
 //
 //  MenuBarExtra Window Introspection.swift
 //  MenuBarExtraAccess • https://github.com/orchetect/MenuBarExtraAccess
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS)
@@ -17,16 +17,15 @@ extension View {
         index: Int = 0,
         _ block: @escaping (_ window: NSWindow) -> Void
     ) -> some View {
-        self
-            .onAppear {
+        onAppear {
                 guard let window = MenuBarExtraUtils.window(for: .index(index)) else {
                     #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                     print("Cannot call introspection block for status item because its window could not be found.")
                     #endif
-                    
+
                     return
                 }
-                
+
                 block(window)
             }
     }

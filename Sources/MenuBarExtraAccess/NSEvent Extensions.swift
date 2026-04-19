@@ -1,7 +1,7 @@
 //
 //  NSEvent Extensions.swift
 //  MenuBarExtraAccess • https://github.com/orchetect/MenuBarExtraAccess
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS)
@@ -46,11 +46,9 @@ extension NSEvent.EventType {
         case .pressure: return "pressure"
         case .directTouch: return "directTouch"
         case .changeMode: return "changeMode"
-            
         #if compiler(>=6.2) // handle cases only known to the SDKs that ship with Xcode 26
         case .mouseCancelled: return "mouseCancelled"
         #endif
-            
         @unknown default:
             assertionFailure("Unhandled `NSEvent.EventType` case with raw value: \(rawValue)")
             return "\(rawValue)"

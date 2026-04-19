@@ -1,18 +1,18 @@
 //
 //  DemoApp.swift
 //  MenuBarExtraAccess • https://github.com/orchetect/MenuBarExtraAccess
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
-import SwiftUI
 import MenuBarExtraAccess
+import SwiftUI
 
 @main
 struct DemoApp: App {
     @State var isMenuExtraPresented: Bool = false
     @State var isMenuExtraEnabled: Bool = true
     @State var statusItem: NSStatusItem?
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView(
@@ -21,7 +21,7 @@ struct DemoApp: App {
             )
         }
         .windowResizability(.contentSize)
-        
+
         MenuBarExtra("Demo", systemImage: "bubble.left.fill") {
             MenuBarView()
         }

@@ -1,7 +1,7 @@
 //
 //  NSControl Extensions.swift
 //  MenuBarExtraAccess • https://github.com/orchetect/MenuBarExtraAccess
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS)
@@ -12,7 +12,7 @@ extension NSControl.StateValue {
     @_disfavoredOverload
     public var name: String {
         switch self {
-        case .on: 
+        case .on:
             return "on"
         case .off:
             return "off"

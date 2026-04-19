@@ -1,7 +1,7 @@
 //
-//  MenuBarExtraUtils.swift
+//  StatusItemIdentity.swift
 //  MenuBarExtraAccess • https://github.com/orchetect/MenuBarExtraAccess
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS)
@@ -14,9 +14,9 @@ enum StatusItemIdentity: Equatable, Hashable {
 extension StatusItemIdentity: CustomStringConvertible {
     var description: String {
         switch self {
-        case .index(let int):
+        case let .index(int):
             return "index \(int)"
-        case .id(let string):
+        case let .id(string):
             return "ID \"\(string)\""
         }
     }

@@ -1,7 +1,7 @@
 //
 //  ContentView.swift
 //  MenuBarExtraAccess • https://github.com/orchetect/MenuBarExtraAccess
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import SwiftUI
@@ -9,7 +9,7 @@ import SwiftUI
 struct ContentView: View {
     @Binding var isMenuExtraPresented: Bool
     @Binding var isMenuExtraEnabled: Bool
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "bubble.left.fill")
@@ -17,21 +17,21 @@ struct ContentView: View {
                 .aspectRatio(contentMode: .fit)
                 .foregroundStyle(.secondary)
                 .frame(width: 80, height: 80)
-            
+
             Text("This menu-based menubar extra has been added to the menubar.")
-            
+
             Divider()
-            
+
             HStack(spacing: 20) {
                 Toggle("Enabled", isOn: $isMenuExtraEnabled)
                     .toggleStyle(.switch)
-                
+
                 Toggle("Presented", isOn: $isMenuExtraPresented)
                     .toggleStyle(.switch)
             }
-            
+
             Divider()
-            
+
             InfoView()
         }
         .padding()
@@ -51,7 +51,7 @@ extension ContentView {
                         .frame(width: 20)
                     Text("Clicking on the Presented toggle will open the menu by setting the binding value to `true`.")
                 }
-                
+
                 HStack(alignment: .top) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 16))
