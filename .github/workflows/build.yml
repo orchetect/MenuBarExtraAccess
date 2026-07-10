@@ -27,7 +27,7 @@ on:
     - cron: '35 13 * * *'   # once a day @ 2:35am UTC (7:35am PST)
 
 env:
-  SCHEME: "MenuBarExtraAccess"
+  SCHEME: MenuBarExtraAccess
 
 jobs:
   macOS-14:
