@@ -204,7 +204,14 @@ struct MenuBarExtraAccess<Content: Scene>: Scene {
 
                 // it's possible for a window to resign key without actually closing, so let's
                 // close it as a failsafe.
-                if window.isVisible {
+                if let statusItem = MenuBarExtraUtils.statusItem(for: .index(index)),
+                   statusItem.usesExpandedInterfaceSession
+                {
+                    // on macOS 27+, closing the window directly would leave the status item's
+                    // expanded interface session active; cancel the session instead
+                    // (a no-op if the session already ended)
+                    statusItem.cancelExpandedInterfaceSession()
+                } else if window.isVisible {
                     #if MENUBAREXTRAACCESS_DEBUG_LOGGING
                     print("Closing MenuBarExtra index \(index) drop-down window as a result of it resigning as key.")
                     #endif

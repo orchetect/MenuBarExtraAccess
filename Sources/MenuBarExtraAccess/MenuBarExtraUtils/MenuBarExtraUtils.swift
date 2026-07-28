@@ -272,6 +272,16 @@ extension NSStatusItem {
         MenuBarExtraUtils.statusItems.firstIndex(of: self) ?? 0
     }
 
+    /// The SwiftUI internal behavior object backing a window-based `MenuBarExtra`
+    /// (`SwiftUI.WindowMenuBarExtraBehavior`), or `nil` for a menu-based `MenuBarExtra`.
+    ///
+    /// On macOS 26 and earlier the behavior is the status item button's `target`;
+    /// on macOS 27+ it is the status item's `expandedInterfaceDelegate`
+    /// (or stashed by this library while the status item is disabled).
+    fileprivate var menuBarExtraBehavior: AnyObject? {
+        button?.target ?? expandedInterfaceDelegate ?? suspendedExpandedInterfaceDelegate
+    }
+
     /// Returns the ID string for the status item.
     /// Returns `nil` if the status item does not contain a `MacControlCenterMenu`
     fileprivate var menuBarExtraID: String? {
@@ -299,11 +309,11 @@ extension NSStatusItem {
         // this may require a less brittle solution if the child path may change, such as grabbing
         // String(dump: behavior) and using RegEx to find the value
 
-        guard let behavior = button?.target, // SwiftUI.WindowMenuBarExtraBehavior <- internal
+        guard let behavior = menuBarExtraBehavior, // SwiftUI.WindowMenuBarExtraBehavior <- internal
               let mirror = Mirror(reflecting: behavior).superclassMirror
         else {
             #if MENUBAREXTRAACCESS_DEBUG_LOGGING
-            print("Could not find status item's target.")
+            print("Could not find status item's behavior object.")
             #endif
 
             return nil
@@ -313,9 +323,9 @@ extension NSStatusItem {
     }
 
     var isMenuBarExtraMenuBased: Bool {
-        // if window-based, target will be the internal type SwiftUI.WindowMenuBarExtraBehavior
-        // if menu-based, target will be nil
-        guard let behavior = button?.target
+        // if window-based, the behavior object will be the internal type
+        // SwiftUI.WindowMenuBarExtraBehavior; if menu-based, there is none
+        guard let behavior = menuBarExtraBehavior
         else {
             return true
         }
