@@ -114,7 +114,7 @@
 			);
 			mainGroup = E212FC0E295167E4007E27BB;
 			packageReferences = (
-				E2FC96EE2E39BE0E008701F5 /* XCLocalSwiftPackageReference "../../../MenuBarExtraAccess" */,
+				E2FC96EE2E39BE0E008701F5 /* XCLocalSwiftPackageReference "../../" */,
 			);
 			productRefGroup = E212FC18295167E4007E27BB /* Products */;
 			projectDirPath = "";
@@ -351,9 +351,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		E2FC96EE2E39BE0E008701F5 /* XCLocalSwiftPackageReference "../../../MenuBarExtraAccess" */ = {
+		E2FC96EE2E39BE0E008701F5 /* XCLocalSwiftPackageReference "../../" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../MenuBarExtraAccess;
+			relativePath = ../../;
 		};
 /* End XCLocalSwiftPackageReference section */
 
